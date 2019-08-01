@@ -1,0 +1,283 @@
+{
+    "options": [
+        {
+            "value": "鬼剑士-男",
+            "label": "鬼剑士-男",
+            "children": [
+                {
+                    "value": "剑神",
+                    "label": "剑神"
+                },{
+                    "value": "黑暗君主",
+                    "label": "黑暗君主"
+                },{
+                    "value": "帝血弑天",
+                    "label": "帝血弑天"
+                },{
+                    "value": "天帝",
+                    "label": "天帝"
+                },{
+                    "value": "夜见罗刹",
+                    "label": "夜见罗刹"
+                }
+            ]
+        },{
+            "value": "鬼剑士-女",
+            "label": "鬼剑士-女",
+            "children": [
+                {
+                    "value": "剑宗",
+                    "label": "剑宗"
+                },{
+                    "value": "剑魔",
+                    "label": "剑魔"
+                },{
+                    "value": "暗帝",
+                    "label": "暗帝"
+                },
+                {
+                    "value": "剑帝",
+                    "label": "剑帝"
+                }
+            ]
+        },{
+            "value": "格斗家-男",
+            "label": "格斗家-男",
+            "children": [
+                {
+                    "value": "念皇",
+                    "label": "念皇"
+                },{
+                    "value": "极武皇",
+                    "label": "极武皇"
+                },{
+                    "value": "暗街之王",
+                    "label": "暗街之王"
+                },
+                {
+                    "value": "宗师",
+                    "label": "宗师"
+                }
+            ]
+        },{
+            "value": "格斗家-女",
+            "label": "格斗家-女",
+            "children": [
+                {
+                    "value": "念帝",
+                    "label": "念帝"
+                },{
+                    "value": "极武圣",
+                    "label": "极武圣"
+                },{
+                    "value": "毒神绝",
+                    "label": "毒神绝"
+                },
+                {
+                    "value": "暴风女皇",
+                    "label": "暴风女皇"
+                }
+            ]
+        },{
+            "value": "神枪手-男",
+            "label": "神枪手-男",
+            "children": [
+                {
+                    "value": "掠天之翼",
+                    "label": "掠天之翼"
+                },{
+                    "value": "毁灭者",
+                    "label": "毁灭者"
+                },{
+                    "value": "机械元首",
+                    "label": "机械元首"
+                },
+                {
+                    "value": "战场统治者",
+                    "label": "战场统治者"
+                }
+            ]
+        },{
+            "value": "神枪手-女",
+            "label": "神枪手-女",
+            "children": [
+                {
+                    "value": "绯红玫瑰",
+                    "label": "绯红玫瑰"
+                },{
+                    "value": "风暴骑兵",
+                    "label": "风暴骑兵"
+                },{
+                    "value": "机械之灵",
+                    "label": "机械之灵"
+                },
+                {
+                    "value": "芙蕾雅",
+                    "label": "芙蕾雅"
+                }
+            ]
+        },{
+            "value": "魔法师-男",
+            "label": "魔法师-男",
+            "children": [
+                {
+                    "value": "湮灭之瞳",
+                    "label": "湮灭之瞳"
+                },{
+                    "value": "刹那永恒",
+                    "label": "刹那永恒"
+                },{
+                    "value": "血狱君主",
+                    "label": "血狱君主"
+                },{
+                    "value": "风神",
+                    "label": "风神"
+                },{
+                    "value": "混沌行者",
+                    "label": "混沌行者"
+                }
+            ]
+        },{
+            "value": "魔法师-女",
+            "label": "魔法师-女",
+            "children": [
+                {
+                    "value": "元素圣灵",
+                    "label": "元素圣灵"
+                },{
+                    "value": "月蚀",
+                    "label": "月蚀"
+                },{
+                    "value": "伊斯塔战灵",
+                    "label": "伊斯塔战灵"
+                },{
+                    "value": "古灵精怪",
+                    "label": "古灵精怪"
+                },{
+                    "value": "冥月女神",
+                    "label": "冥月女神"
+                }
+            ]
+        },{
+            "value": "圣职者-男",
+            "label": "圣职者-男",
+            "children": [
+                {
+                    "value": "神思者",
+                    "label": "神思者"
+                },{
+                    "value": "正义仲裁者",
+                    "label": "正义仲裁者"
+                },{
+                    "value": "真龙星君",
+                    "label": "真龙星君"
+                },{
+                    "value": "永生者",
+                    "label": "永生者"
+                }
+            ]
+        },{
+            "value": "圣职者-女",
+            "label": "圣职者-女",
+            "children": [
+                {
+                    "value": "炽天使",
+                    "label": "炽天使"
+                },{
+                    "value": "炎狱裁决者",
+                    "label": "炎狱裁决者"
+                },{
+                    "value": "神龙天女",
+                    "label": "神龙天女"
+                },{
+                    "value": "救世主",
+                    "label": "救世主"
+                }
+            ]
+        },{
+            "value": "暗夜使者",
+            "label": "暗夜使者",
+            "children": [
+                {
+                    "value": "月影星劫",
+                    "label": "月影星劫"
+                },{
+                    "value": "亡魂主宰",
+                    "label": "亡魂主宰"
+                },{
+                    "value": "不知火",
+                    "label": "不知火"
+                },{
+                    "value": "幽冥",
+                    "label": "幽冥"
+                }
+            ]
+        },{
+            "value": "守护者",
+            "label": "守护者",
+            "children": [
+                {
+                    "value": "大地女神",
+                    "label": "大地女神"
+                },{
+                    "value": "黑曜神",
+                    "label": "黑曜神"
+                },{
+                    "value": "龙神",
+                    "label": "龙神"
+                },{
+                    "value": "破晓女神",
+                    "label": "破晓女神"
+                }
+            ]
+        },{
+            "value": "魔枪士",
+            "label": "魔枪士",
+            "children": [
+                {
+                    "value": "圣武枪魂",
+                    "label": "圣武枪魂"
+                },{
+                    "value": "不灭战神",
+                    "label": "不灭战神"
+                },{
+                    "value": "屠戮之魂",
+                    "label": "屠戮之魂"
+                },{
+                    "value": "幽影夜神",
+                    "label": "幽影夜神"
+                }
+            ]
+        },{
+            "value": "外传职业",
+            "label": "外传职业",
+            "children": [
+                {
+                    "value": "黑暗武士",
+                    "label": "黑暗武士"
+                },{
+                    "value": "缔造者",
+                    "label": "缔造者"
+                }
+            ]
+        },{
+            "value": "枪剑士",
+            "label": "枪剑士",
+            "children": [
+                {
+                    "value": "铁血教父",
+                    "label": "铁血教父"
+                },{
+                    "value": "弑心镇魂者",
+                    "label": "弑心镇魂者"
+                },{
+                    "value": "巅峰狂徒",
+                    "label": "巅峰狂徒"
+                },{
+                    "value": "未来开拓者",
+                    "label": "未来开拓者"
+                }
+            ]
+        }
+    ]
+}

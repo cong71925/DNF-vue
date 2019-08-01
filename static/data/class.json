@@ -1,0 +1,14 @@
+{
+    "options": [
+        {
+            "value": "center",
+            "label": "纯C"
+        },{
+            "value": "support",
+            "label": "辅C"
+        },{
+            "value": "buffer",
+            "label": "奶"
+        }
+    ]
+}
