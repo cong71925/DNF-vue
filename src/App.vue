@@ -5,7 +5,9 @@
         <navbar :key="$store.state.login" />
       </el-header>
       <el-main>
-        <router-view />
+        <transition name="el-zoom-in-top">
+          <router-view />
+        </transition>
       </el-main>
     </el-container>
   </div>
@@ -14,7 +16,13 @@
 import Navbar from './components/Navbar'
 export default {
   components: { Navbar },
-  name: 'App'
+  methods: {
+  },
+  name: 'App',
+  data () {
+    this.getState();
+    return {}
+  }
 }
 </script>
 <style>

@@ -4,6 +4,9 @@ import Index from '@/components/Index'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import Account from '@/components/Account/Account.vue'
+import InfoView from '@/components/Account/InfoView.vue'
+import InfoModify from '@/components/Account/InfoModify.vue'
+import PasswordModify from '@/components/Account/PasswordModify.vue'
 import Character from '@/components/Character/Character.vue'
 import Group from '@/components/Group/Group.vue'
 import GroupView from '@/components/Group/GroupView/GroupView.vue'
@@ -13,14 +16,8 @@ import GroupMember from '@/components/Group/GroupView/GroupMember.vue'
 import GroupCharacter from '@/components/Group/GroupView/GroupCharacter.vue'
 
 Vue.use(Router)
-
-export default new Router({
+const router = new Router({
   routes: [
-    {
-      path: '/index',
-      name: 'Index',
-      component: Index
-    },
     {
       path: '/',
       name: 'Index',
@@ -39,7 +36,23 @@ export default new Router({
     {
       path: '/account',
       name: 'Account',
-      component: Account
+      component: Account,
+      children: [{
+        path: 'info',
+        name: 'InfoView',
+        component: InfoView
+      },
+      {
+        path: 'infomodify',
+        name: 'InfoModify',
+        component: InfoModify
+      },
+      {
+        path: 'passwordmodify',
+        name: 'PasswordModify',
+        component: PasswordModify
+      }
+      ]
     },
     {
       path: '/character',
@@ -79,3 +92,15 @@ export default new Router({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  router.app.getState()
+  if (to.name === 'Login' && router.app.$store.state.isLogin) {
+    next('/')
+  } else if (to.name === 'Register' && router.app.$store.state.isLogin) {
+    next('/')
+  } else {
+    next()
+  }
+})
+
+export default router

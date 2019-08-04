@@ -1,0 +1,14 @@
+{
+    "options": [
+        {
+            "value": "纯C",
+            "label": "纯C"
+        },{
+            "value": "辅C",
+            "label": "辅C"
+        },{
+            "value": "奶",
+            "label": "奶"
+        }
+    ]
+}

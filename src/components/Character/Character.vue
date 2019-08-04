@@ -8,83 +8,77 @@
             <h4>添加角色</h4>
           </el-card>
         </el-col>
-
-        <el-dialog title="添加角色" :visible.sync="dialogVisible">
-          <el-form :label-width="'80px'">
-            <el-form-item label="角色名:">
-              <el-input size="mini"></el-input>
-            </el-form-item>
-            <el-form-item label="职责:">
-              <el-cascader
-                v-model="character.class_main"
-                :options="class_main"
-                size="mini"
-                :props="{ expandTrigger: 'hover' }"
-              ></el-cascader>
-            </el-form-item>
-            <el-form-item label="职业:">
-              <el-cascader
-                v-model="character.class_sub"
-                :options="class_sub"
-                size="mini"
-                :props="{ expandTrigger: 'hover' }"
-              ></el-cascader>
-            </el-form-item>
-            <div v-if="character.class_main=='buffer'">
-              <el-form-item label="常驻力智">
-                <el-input size="mini" v-model="character.buff_default"></el-input>
-              </el-form-item>
-              <el-form-item label="常驻三攻">
-                <el-input size="mini" v-model="character.buff_atk"></el-input>
-              </el-form-item>
-              <el-form-item label="太阳">
-                <el-input size="mini" v-model="character.buff_burst"></el-input>
-              </el-form-item>
-            </div>
-            <div v-else>
-              <el-form-item label="15s伤害">
-                <el-input size="mini" v-model="character.damage_15s">
-                  <template slot="append">e</template>
-                </el-input>
-              </el-form-item>
-              <el-form-item label="20s伤害">
-                <el-input size="mini" v-model="character.damage_20s">
-                  <template slot="append">e</template>
-                </el-input>
-              </el-form-item>
-            </div>
-          </el-form>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-          </span>
-        </el-dialog>
-        <characterItem :class_main="class_main" :class_sub="class_sub" />
+      </el-row>
+      <characterAdd
+        :dialogVisible.sync="dialogVisible"
+        @update="getCharacter"
+        :job="job"
+        :class_sub="class_sub"
+      />
+      <el-row :gutter="20">
+        <div v-for="item in character" :key="item.id">
+          <characterItem :job="job" :class_sub="class_sub" :character="item" />
+        </div>
       </el-row>
     </el-main>
     <el-footer>
-      <el-pagination layout="prev, pager, next" :total="1000"></el-pagination>
+      <el-pagination
+        layout="prev, pager, next"
+        :total="nums"
+        @current-change="handleCurrentChange"
+        :hide-on-single-page="value"
+        :page-size="12"
+      ></el-pagination>
     </el-footer>
   </el-container>
 </template>
 <script>
 import characterItem from "./CharacterItem.vue";
+import characterAdd from "./CharacterAdd.vue";
 export default {
-  components: { characterItem },
+  components: { characterItem, characterAdd },
   methods: {
-    getClassMain() {
-      this.axios
-        .get("static/data/class.json")
+    handleCurrentChange(val) {
+      this.page = val;
+      this.getCharacter();
+    },
+    getCharacter() {
+      this.axios({
+        method: "post",
+        url: "/api/getCharacterInfo.php",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+        },
+        data: {
+          user_id: this.$store.state.user_id,
+          user_token: this.$store.state.user_token,
+          page: this.page
+        }
+      })
         .then(response => {
-          this.class_main = response.data.options;
+          this.nums = Number(response.data.nums);
+          if(this.nums > 12){
+            this.value = false;
+          }
+          this.character = response.data.characterList;
+        })
+        .catch(response => {
+          console.log(response.data);
+        });
+    },
+    getClass() {
+      this.axios
+        .get("static/data/job.json")
+        .then(response => {
+          this.job = response.data.options;
         })
         .catch(response => {
           console.log(response);
         });
     },
-    getClassSub() {
+    getJob() {
       this.axios
-        .get("static/data/class_sub.json")
+        .get("static/data/class.json")
         .then(response => {
           this.class_sub = response.data.options;
         })
@@ -94,30 +88,21 @@ export default {
     }
   },
   data() {
-    var class_main;
+    var job;
     var class_sub;
-    var character = {
-      id: 0,
-      user_id: 0,
-      character_name: "",
-      class_main: "",
-      class_sub: "",
-      damage_15s: "",
-      damage_20s: "",
-      buff_default: "",
-      buff_atk: "",
-      buff_burst: "",
-      luke: 0,
-      demon: 0,
-      isis: 0
-    };
-    this.getClassMain();
-    this.getClassSub();
+    var page = 1;
+    var character;
+    this.getClass();
+    this.getJob();
+    this.getCharacter();
     return {
       dialogVisible: false,
-      class_main,
+      job,
       class_sub,
-      character
+      character,
+      nums: 0,
+      page,
+      value: true
     };
   }
 };

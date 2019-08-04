@@ -4,9 +4,8 @@
       <el-menu
         default-active="/groupview/info"
         :router="true"
-        unique-opened="true"
       >
-        <el-submenu>
+        <el-submenu index="/groupview/info">
           <template slot="title">
             <i class="el-icon-s-custom"></i>
             <span>团队总览</span>
@@ -27,7 +26,9 @@
       </el-menu>
     </el-aside>
     <el-main>
-      <router-view />
+      <transition name="el-fade-in">
+        <router-view />
+      </transition>
     </el-main>
   </el-container>
 </template>
