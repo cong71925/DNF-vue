@@ -6,13 +6,12 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:80/dnf_php/',//设置你调用的接口域名和端口号 别忘了加http
+        target: 'http://localhost:80/api/',//设置你调用的接口域名和端口号 别忘了加http
         changeOrigin: true,//如果需要跨域
         pathRewrite: {
           '^/api': '/'
@@ -59,11 +58,9 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-
     /**
      * Source Maps
      */
-
     productionSourceMap: true,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',

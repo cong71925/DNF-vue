@@ -51,16 +51,15 @@
   </el-dialog>
 </template>
 <script>
-import characterItem from "./CharacterItem.vue";
 export default {
-  props: ["dialogVisible","job","class_sub"],
-  components: { characterItem },
+  props: ['dialogVisible', 'job', 'class_sub'],
+
   watch: {
-    dialogVisible(val){
-      this.visible = val;
+    dialogVisible(val) {
+      this.visible = val
     },
     visible(val) {
-      this.$emit("update:dialogVisible", val);
+      this.$emit('update:dialogVisible', val)
     }
   },
   methods: {
@@ -68,10 +67,10 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.axios({
-            method: "post",
-            url: "/api/addCharacter.php",
+            method: 'post',
+            url: '/api/addCharacter.php',
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             data: {
               user_id: this.$store.state.user_id,
@@ -88,73 +87,80 @@ export default {
             }
           })
             .then(response => {
-              if (response.data === "success") {
-                alert("添加成功！");
-                this.$refs[formName].resetFields();
-                this.$emit("update");
-                this.visible = false;
-                console.log(response.data);
+              if (response.data === 'success') {
+                this.$message({
+                  type: 'success',
+                  message: '添加成功!'
+                })
+                this.$refs[formName].resetFields()
+                this.$emit('update')
+                this.visible = false
+                console.log(response.data)
               } else {
-                console.log(response.data);
+                this.$message({
+                  type: 'error',
+                  message: '添加失败!'
+                })
+                console.log(response.data)
               }
             })
             .catch(response => {
-              console.log(response);
-            });
+              console.log(response)
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     }
   },
   data() {
     var form = {
-      character_name: "",
-      job: "",
-      class: "",
+      character_name: '',
+      job: '',
+      class: '',
       damage_15s: 0,
       damage_20s: 0,
       buff_default: 0,
       buff_atk: 0,
       buff_burst: 0
-    };
+    }
     const rules = {
       character_name: [
-        { required: true, message: "请输入角色名称", trigger: "blur" },
-        { min: 1, max: 20, message: "长度在 0 到 20 个字符", trigger: "blur" }
+        { required: true, message: '请输入角色名称', trigger: 'blur' },
+        { min: 1, max: 20, message: '长度在 0 到 20 个字符', trigger: 'blur' }
       ],
       job: [
         {
-          type: "array",
+          type: 'array',
           required: true,
-          message: "请选择职责",
-          trigger: "change"
+          message: '请选择职责',
+          trigger: 'change'
         }
       ],
       class: [
         {
-          type: "array",
+          type: 'array',
           required: true,
-          message: "请选择职业",
-          trigger: "change"
+          message: '请选择职业',
+          trigger: 'change'
         }
       ],
       buff_default: [
-        { type: "number", message: "请输入数字", trigger: "blur" }
+        { type: 'number', message: '请输入数字', trigger: 'blur' }
       ],
-      buff_atk: [{ type: "number", message: "请输入数字", trigger: "blur" }],
-      buff_burst: [{ type: "number", message: "请输入数字", trigger: "blur" }],
-      damage_15s: [{ type: "number", message: "请输入数字", trigger: "blur" }],
-      damage_20s: [{ type: "number", message: "请输入数字", trigger: "blur" }]
-    };
+      buff_atk: [{ type: 'number', message: '请输入数字', trigger: 'blur' }],
+      buff_burst: [{ type: 'number', message: '请输入数字', trigger: 'blur' }],
+      damage_15s: [{ type: 'number', message: '请输入数字', trigger: 'blur' }],
+      damage_20s: [{ type: 'number', message: '请输入数字', trigger: 'blur' }]
+    }
     return {
       form,
       rules,
       visible: this.dialogVisible
-    };
+    }
   }
-};
+}
 </script>
 <style>
 .card {

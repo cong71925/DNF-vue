@@ -72,10 +72,10 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.axios({
-            method: "post",
-            url: "/api/register.php",
+            method: 'post',
+            url: '/api/register.php',
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             data: {
               username: this.register_form.username,
@@ -88,88 +88,102 @@ export default {
           })
             .then(response => {
               if (response.data == 'success') {
-                alert('注册成功');
-              }else{
-                console.log(response.data);
+                this.$message({
+                  type: 'success',
+                  message: '注册成功！'
+                })
+                this.$router.push('/')
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: '注册失败！'
+                })
+                console.log(response.data)
               }
             })
             .catch(response => {
-              console.log(response);
-            });
+              console.log(response)
+            })
         } else {
-          alert("error submit!!");
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     getServer() {
       this.axios
-        .get("static/data/server.json")
+        .get('static/data/server.json')
         .then(response => {
-          this.server = response.data.options;
+          this.server = response.data.options
         })
         .catch(response => {
-          console.log(response);
-        });
+          console.log(response)
+        })
     }
   },
   data() {
+    if (this.$store.state.isLogin) {
+      this.$message({
+        type: 'error',
+        message: '您已登录！'
+      })
+      this.$router.push('/')
+    }
     var register_form = {
-      username: "",
-      password: "",
-      password_check: "",
-      nickname: "",
-      server_select: "",
-      club: ""
-    };
+      username: '',
+      password: '',
+      password_check: '',
+      nickname: '',
+      server_select: '',
+      club: ''
+    }
     const checkPass = (rule, value, callback) => {
       if (value !== this.register_form.password) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error('两次输入密码不一致!'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const rules = {
       username: [
-        { required: true, message: "用户名", trigger: "blur" },
-        { min: 6, max: 12, message: "长度在 6 到 12 个字符", trigger: "blur" }
+        { required: true, message: '用户名', trigger: 'blur' },
+        { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
       ],
       password: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-        { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
       ],
       password_check: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-        { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" },
-        { validator: checkPass, trigger: "blur" }
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+        { validator: checkPass, trigger: 'blur' }
       ],
       nickname: [
-        { required: true, message: "请输入昵称", trigger: "blur" },
-        { min: 2, max: 12, message: "长度在 2 到 12 个字符", trigger: "blur" }
+        { required: true, message: '请输入昵称', trigger: 'blur' },
+        { min: 2, max: 12, message: '长度在 2 到 12 个字符', trigger: 'blur' }
       ],
       server_select: [
         {
-          type: "array",
+          type: 'array',
           required: true,
-          message: "请选择服务器",
-          trigger: "change"
+          message: '请选择服务器',
+          trigger: 'change'
         }
       ],
       club: [
-        { required: true, message: "请填写冒险团名称", trigger: "blur" },
-        { max: 20, message: "长度在 0 到 20 个字符", trigger: "blur" }
+        { required: true, message: '请填写冒险团名称', trigger: 'blur' },
+        { max: 20, message: '长度在 0 到 20 个字符', trigger: 'blur' }
       ]
-    };
-    var server;
-    this.getServer();
+    }
+    var server
+    this.getServer()
     return {
       register_form,
       rules,
       server
-    };
+    }
   }
-};
+}
 </script>
 <style>
 #panel_register {

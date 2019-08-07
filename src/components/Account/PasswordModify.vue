@@ -18,17 +18,17 @@
   </div>
 </template>
 <script>
-import encrypt from "@/utils.js";
+import encrypt from '@/utils.js'
 export default {
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.axios({
-            method: "post",
-            url: "/api/modifyPassword.php",
+            method: 'post',
+            url: '/api/modifyPassword.php',
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             data: {
               user_id: this.$store.state.user_id,
@@ -38,67 +38,66 @@ export default {
             }
           })
             .then(response => {
-              if (response.data == "success") {
-                alert("修改成功");
-                this.password.password_0 = null;
-                this.password.password_1 = null;
-                this.password.password_2 = null;
-                
+              if (response.data == 'success') {
+                alert('修改成功')
+                this.password.password_0 = null
+                this.password.password_1 = null
+                this.password.password_2 = null
               } else {
-                console.log(response.data);
-                this.password.password_0 = null;
-                this.password.password_1 = null;
-                this.password.password_2 = null;
+                console.log(response.data)
+                this.password.password_0 = null
+                this.password.password_1 = null
+                this.password.password_2 = null
               }
             })
             .catch(response => {
-              console.log(response);
-              this.password.password_0 = null;
-              this.password.password_1 = null;
-              this.password.password_2 = null;
-            });
+              console.log(response)
+              this.password.password_0 = null
+              this.password.password_1 = null
+              this.password.password_2 = null
+            })
         } else {
-          alert("error submit!!");
-          console.log("error submit!!");
-          return false;
+          alert('error submit!!')
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     }
   },
   data() {
     var password = {
-      password_0: "",
-      password_1: "",
-      password_2: ""
-    };
+      password_0: '',
+      password_1: '',
+      password_2: ''
+    }
     const checkPass = (rule, value, callback) => {
       if (value !== this.password.password_1) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error('两次输入密码不一致!'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const rules = {
       password_0: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-        { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
       ],
       password_1: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-        { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
       ],
       password_2: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-        { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" },
-        { validator: checkPass, trigger: "blur" }
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+        { validator: checkPass, trigger: 'blur' }
       ]
-    };
+    }
     return {
       password,
       rules
-    };
+    }
   }
-};
+}
 </script>
 <style>
 </style>

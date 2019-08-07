@@ -1,10 +1,7 @@
 <template>
   <el-container>
     <el-aside width="200px">
-      <el-menu
-        default-active="/account/info"
-        :router="true"
-      >
+      <el-menu default-active="/account/info" :router="true">
         <el-menu-item index="/account/info">
           <i class="el-icon-user"></i>
           <span slot="title">个人信息</span>

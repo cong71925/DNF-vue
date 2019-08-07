@@ -30,20 +30,20 @@
   </div>
 </template>
 <script>
-import encrypt from "@/utils.js";
+import encrypt from '@/utils.js'
 export default {
   methods: {
     login() {
-      this.$store.commit("login");
+      this.$store.commit('login')
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.axios({
-            method: "post",
-            url: "/api/login.php",
+            method: 'post',
+            url: '/api/login.php',
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             data: {
               username: this.login_form.username,
@@ -51,53 +51,68 @@ export default {
             }
           })
             .then(response => {
-              if (response.data == "error:username select failed") {
-                console.log(response.data);
-                this.login_form.username = null;
-                this.login_form.password = null;
-                alert("用户名不存在！");
-              } else if (response.data == "error:password error") {
-                console.log(response.data);
-                this.login_form.password = null;
-                alert("密码错误！");
+              if (response.data == 'error:username select failed') {
+                console.log(response.data)
+                this.login_form.username = null
+                this.login_form.password = null
+                this.$message({
+                  type: 'error',
+                  message: '用户名不存在！'
+                })
+              } else if (response.data == 'error:password error') {
+                console.log(response.data)
+                this.login_form.password = null
+                this.$message({
+                  type: 'error',
+                  message: '密码错误！'
+                })
               } else {
-                this.$store.commit("setLoginState", response.data);
-                alert("成功登录！");
-                this.$router.push('/');
+                this.$store.commit('setLoginState', response.data)
+                this.$message({
+                  type: 'success',
+                  message: '成功登录！'
+                })
+                this.$router.push('/')
               }
             })
             .catch(response => {
-              console.log(response);
-            });
+              console.log(response)
+            })
         } else {
-          alert("error submit!!");
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     }
   },
   data() {
+    if (this.$store.state.isLogin) {
+      this.$message({
+        type: 'error',
+        message: '您已登录！'
+      })
+      this.$router.push('/')
+    }
     var login_form = {
-      username: "",
-      password: ""
-    };
+      username: '',
+      password: ''
+    }
     const rules = {
       username: [
-        { required: true, message: "用户名", trigger: "blur" },
-        { min: 6, max: 12, message: "长度在 6 到 12 个字符", trigger: "blur" }
+        { required: true, message: '用户名', trigger: 'blur' },
+        { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
       ],
       password: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-        { min: 6, max: 20, message: "长度在 6 到 20 个字符", trigger: "blur" }
+        { required: true, message: '请输入密码', trigger: 'blur' },
+        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
       ]
-    };
+    }
     return {
       login_form,
       rules
-    };
+    }
   }
-};
+}
 </script>
 <style>
 #panel_login {

@@ -23,43 +23,51 @@
 </template>
 <script>
 export default {
-  name: "Navbar",
+  name: 'Navbar',
   methods: {
-    logout(){
+    logout() {
       if (
-        localStorage.getItem("user_id") &&
-        localStorage.getItem("user_token")
-      ){
-      this.axios({
-          method: "post",
-          url: "/api/logout.php",
+        localStorage.getItem('user_id') &&
+        localStorage.getItem('user_token')
+      ) {
+        this.axios({
+          method: 'post',
+          url: '/api/logout.php',
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
           },
           data: {
-            user_id: localStorage.getItem("user_id")
+            user_id: localStorage.getItem('user_id')
           }
         })
           .then(response => {
-            if (response.data == "logout success") {
-              this.$store.commit("setLogoutState");
-              alert('注销成功');
+            if (response.data == 'logout success') {
+              this.$store.commit('setLogoutState')
+              this.$message({
+                type: 'success',
+                message: '注销成功！'
+              })
+              this.$router.push({ name: 'Index' })
             } else {
-              console.log(response.data);
+              this.$message({
+                type: 'success',
+                message: '注销失败！'
+              })
+              console.log(response.data)
             }
           })
           .catch(response => {
-            console.log(response);
-          });
-      }else {
-        this.$store.commit("setLogoutState");
+            console.log(response)
+          })
+      } else {
+        this.$store.commit('setLogoutState')
       }
     }
   },
   data() {
-    return {};
+    return {}
   }
-};
+}
 </script>
 <style>
 #user {

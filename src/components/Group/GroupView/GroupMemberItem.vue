@@ -1,38 +1,25 @@
 <template>
   <el-collapse-item>
     <template slot="title">
-      <h3>成员名称</h3>
+      <h3>{{ memberInfo.nickname }}</h3>
     </template>
-    <el-carousel :interval="4000" type="card" height="500px">
-      <el-carousel-item>
-        <CharacterCard />
-      </el-carousel-item>
-      <el-carousel-item>
-        <CharacterCard />
-      </el-carousel-item>
-      <el-carousel-item>
-        <CharacterCard />
-      </el-carousel-item>
-      <el-carousel-item>
-        <CharacterCard />
-      </el-carousel-item>
-      <el-carousel-item>
-        <CharacterCard />
-      </el-carousel-item>
+    <el-carousel :interval="4000" type="card" height="350px">
+      <div v-for="item in memberInfo.characterList" :key="item.index">
+        <el-carousel-item>
+          <CharacterCard :characterInfo="item" />
+        </el-carousel-item>
+      </div>
     </el-carousel>
   </el-collapse-item>
 </template>
 <script>
 import CharacterCard from './CharacterCard.vue'
 export default {
+  props: ['memberInfo'],
   components: { CharacterCard },
-  methods: {
-    
-  },
+  methods: {},
   data() {
-    return {
-      
-    };
+    return {}
   }
-};
+}
 </script>

@@ -17,6 +17,7 @@ import GroupCharacter from '@/components/Group/GroupView/GroupCharacter.vue'
 
 Vue.use(Router)
 const router = new Router({
+  base: '/dnf/',
   routes: [
     {
       path: '/',
@@ -65,18 +66,17 @@ const router = new Router({
       component: Group
     },
     {
-      path: '/groupview',
-      name: 'GroupView',
+      path: '/groupview/:id',
       component: GroupView,
       children: [{
+        path: '/',
+        name: 'GroupInfo',
+        component: GroupInfo
+      },
+      {
         path: 'setting',
         name: 'GroupSetting',
         component: GroupSetting
-      },
-      {
-        path: 'info',
-        name: 'GroupInfo',
-        component: GroupInfo
       },
       {
         path: 'member',
@@ -94,13 +94,7 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   router.app.getState()
-  if (to.name === 'Login' && router.app.$store.state.isLogin) {
-    next('/')
-  } else if (to.name === 'Register' && router.app.$store.state.isLogin) {
-    next('/')
-  } else {
-    next()
-  }
+  next()
 })
 
 export default router

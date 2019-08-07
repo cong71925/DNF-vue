@@ -26,7 +26,7 @@
       </el-form-item>
       <el-divider></el-divider>
       <el-form-item>
-        <el-button type="primary" id="submit" style="float:right;" @click="submitForm('user')">提交</el-button>
+        <el-button type="primary" style="float:right;" @click="submitForm('user')">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -38,10 +38,10 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.axios({
-            method: "post",
-            url: "/api/modifyUserInfo.php",
+            method: 'post',
+            url: '/api/modifyUserInfo.php',
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
             data: {
               user_id: this.$store.state.user_id,
@@ -55,37 +55,37 @@ export default {
           })
             .then(response => {
               if (response.data == 'success') {
-                alert('修改成功');
-              }else{
-                console.log(response.data);
+                alert('修改成功')
+              } else {
+                console.log(response.data)
               }
             })
             .catch(response => {
-              console.log(response);
-            });
+              console.log(response)
+            })
         } else {
-          alert("error submit!!");
-          console.log("error submit!!");
-          return false;
+          alert('error submit!!')
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     getServer() {
       this.axios
-        .get("static/data/server.json")
+        .get('static/data/server.json')
         .then(response => {
-          this.server = response.data.options;
+          this.server = response.data.options
         })
         .catch(response => {
-          console.log(response);
-        });
+          console.log(response)
+        })
     },
     getUserInfo() {
       this.axios({
-        method: "post",
-        url: "/api/getUserInfo.php",
+        method: 'post',
+        url: '/api/getUserInfo.php',
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
         data: {
           user_id: this.$store.state.user_id,
@@ -93,62 +93,61 @@ export default {
         }
       })
         .then(response => {
-          if (response.data === "error") {
-            console.log(response.data);
+          if (response.data === 'error') {
+            console.log(response.data)
           } else {
-            this.user.username = response.data.username;
-            this.user.nickname = response.data.nickname;
-            this.user.club = response.data.club;
-            this.user.nickname = response.data.nickname;
-            this.user.server_select[0] = response.data.server_0;
-            this.user.server_select[1] = response.data.server_1;
+            this.user.username = response.data.username
+            this.user.nickname = response.data.nickname
+            this.user.club = response.data.club
+            this.user.nickname = response.data.nickname
+            this.user.server_select[0] = response.data.server_0
+            this.user.server_select[1] = response.data.server_1
           }
         })
         .catch(response => {
-          console.log(response);
-        });
+          console.log(response)
+        })
     }
   },
   data() {
-    var server;
+    var server
     var user = {
-      username: "",
-      nickname: "",
-      club: "",
-      server_select: ["",""]
-    };
+      username: '',
+      nickname: '',
+      club: '',
+      server_select: ['', '']
+    }
     const rules = {
       username: [
-        { required: true, message: "用户名", trigger: "blur" },
-        { min: 6, max: 12, message: "长度在 6 到 12 个字符", trigger: "blur" }
+        { required: true, message: '用户名', trigger: 'blur' },
+        { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
       ],
       nickname: [
-        { required: true, message: "请输入昵称", trigger: "blur" },
-        { min: 2, max: 12, message: "长度在 2 到 12 个字符", trigger: "blur" }
+        { required: true, message: '请输入昵称', trigger: 'blur' },
+        { min: 2, max: 12, message: '长度在 2 到 12 个字符', trigger: 'blur' }
       ],
       server_select: [
         {
-          type: "array",
+          type: 'array',
           required: true,
-          message: "请选择服务器",
-          trigger: "change"
+          message: '请选择服务器',
+          trigger: 'change'
         }
       ],
       club: [
-        { required: true, message: "请填写冒险团名称", trigger: "blur" },
-        { max: 20, message: "长度在 0 到 20 个字符", trigger: "blur" }
+        { required: true, message: '请填写冒险团名称', trigger: 'blur' },
+        { max: 20, message: '长度在 0 到 20 个字符', trigger: 'blur' }
       ]
-    };
-    this.getServer();
-    this.getUserInfo();
+    }
+    this.getServer()
+    this.getUserInfo()
     return {
       server,
       user,
       rules
-    };
+    }
   }
-};
+}
 </script>
 <style>
-
 </style>

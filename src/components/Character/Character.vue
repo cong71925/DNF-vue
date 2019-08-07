@@ -15,9 +15,14 @@
         :job="job"
         :class_sub="class_sub"
       />
-      <el-row :gutter="20">
+      <el-row :gutter="20" v-loading="loading">
         <div v-for="item in character" :key="item.id">
-          <characterItem :job="job" :class_sub="class_sub" :character="item" />
+          <characterItem
+            :job="job"
+            :class_sub="class_sub"
+            :character="item"
+            @update="getCharacter"
+          />
         </div>
       </el-row>
     </el-main>
@@ -26,28 +31,28 @@
         layout="prev, pager, next"
         :total="nums"
         @current-change="handleCurrentChange"
-        :hide-on-single-page="value"
         :page-size="12"
       ></el-pagination>
     </el-footer>
   </el-container>
 </template>
 <script>
-import characterItem from "./CharacterItem.vue";
-import characterAdd from "./CharacterAdd.vue";
+import characterItem from './CharacterItem.vue'
+import characterAdd from './CharacterAdd.vue'
 export default {
   components: { characterItem, characterAdd },
   methods: {
     handleCurrentChange(val) {
-      this.page = val;
-      this.getCharacter();
+      this.page = val
+      this.getCharacter()
     },
     getCharacter() {
+      this.loading = true
       this.axios({
-        method: "post",
-        url: "/api/getCharacterInfo.php",
+        method: 'post',
+        url: '/api/getCharacterInfo.php',
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
         data: {
           user_id: this.$store.state.user_id,
@@ -56,45 +61,50 @@ export default {
         }
       })
         .then(response => {
-          this.nums = Number(response.data.nums);
-          if(this.nums > 12){
-            this.value = false;
-          }
-          this.character = response.data.characterList;
+          this.character = response.data.characterList
+          this.nums = Number(response.data.nums)
+          this.loading = false
         })
         .catch(response => {
-          console.log(response.data);
-        });
+          console.log(response.data)
+        })
     },
     getClass() {
       this.axios
-        .get("static/data/job.json")
+        .get('static/data/job.json')
         .then(response => {
-          this.job = response.data.options;
+          this.job = response.data.options
         })
         .catch(response => {
-          console.log(response);
-        });
+          console.log(response)
+        })
     },
     getJob() {
       this.axios
-        .get("static/data/class.json")
+        .get('static/data/class.json')
         .then(response => {
-          this.class_sub = response.data.options;
+          this.class_sub = response.data.options
         })
         .catch(response => {
-          console.log(response);
-        });
+          console.log(response)
+        })
     }
   },
   data() {
-    var job;
-    var class_sub;
-    var page = 1;
-    var character;
-    this.getClass();
-    this.getJob();
-    this.getCharacter();
+    var job
+    var class_sub
+    var page = 1
+    var character
+    if (!this.$store.state.isLogin) {
+      this.$message({
+        type: 'error',
+        message: '请先登录！'
+      })
+      this.$router.push('/')
+    }
+    this.getClass()
+    this.getJob()
+    this.getCharacter()
     return {
       dialogVisible: false,
       job,
@@ -102,10 +112,11 @@ export default {
       character,
       nums: 0,
       page,
-      value: true
-    };
+      value: true,
+      loading: true
+    }
   }
-};
+}
 </script>
 <style>
 .card {
