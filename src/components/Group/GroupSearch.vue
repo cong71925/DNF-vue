@@ -13,7 +13,7 @@
       <el-col :span="12">{{ searchResult.create_time }}</el-col>
     </el-row>
     <span slot="footer" class="dialog-footer">
-      <el-form :model="form" status-icon :rules="rules" ref="form">
+      <el-form :model="form" status-icon :rules="rules" ref="form" size="small"> 
         <el-form-item prop="password">
           <el-input
             v-model="form.password"
@@ -23,7 +23,7 @@
             show-password
             autocomplete="off"
           >
-            <el-button slot="append" icon="el-icon-plus" @click="joinGroup('form')">加入团队</el-button>
+            <el-button slot="append" icon="el-icon-plus" @click="joinGroup('form')"></el-button>
           </el-input>
         </el-form-item>
       </el-form>
@@ -48,18 +48,21 @@ export default {
     searchGroup() {
       this.axios({
         method: 'post',
-        url: '/api/searchGroup.php',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
         data: {
-          user_id: this.$store.state.user_id,
-          user_token: this.$store.state.user_token,
-          group_id: this.searchInput
+          action: 'searchGroup',
+          data: {
+            user_id: this.$store.state.user_id,
+            user_token: this.$store.state.user_token,
+            group_id: this.searchInput
+          }
         }
       })
         .then(response => {
-          this.searchResult = response.data
+          if (response.data.state === 'success') {
+            this.searchResult = response.data.result
+          } else {
+            console.log(response)
+          }
         })
         .catch(response => {
           console.log(response)
@@ -70,32 +73,40 @@ export default {
         if (valid) {
           this.axios({
             method: 'post',
-            url: '/api/joinGroup.php',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
             data: {
-              user_id: this.$store.state.user_id,
-              user_token: this.$store.state.user_token,
-              group_id: this.searchInput,
-              join_password: this.form.password
+              action: 'joinGroup',
+              data: {
+                user_id: this.$store.state.user_id,
+                user_token: this.$store.state.user_token,
+                group_id: this.searchInput,
+                join_password: this.form.password
+              }
             }
           })
             .then(response => {
-              if (response.data === 'success') {
+              if (response.data.state === 'success') {
                 this.$message({
                   type: 'success',
                   message: '成功加入！'
                 })
                 this.visible = false
                 this.$emit('update')
+              } else if (response.data.message === 'in the group'){
+                this.$message({
+                  type: 'error',
+                  message: '您已在团队内！'
+                })
+              }else if (response.data.message === 'password error'){
+                this.$message({
+                  type: 'error',
+                  message: '密码错误！'
+                })
               } else {
                 this.$message({
                   type: 'error',
-                  message: '加入失败！'
+                  message: '加入错误！'
                 })
               }
-              console.log(response.data)
             })
             .catch(response => {
               console.log(response)

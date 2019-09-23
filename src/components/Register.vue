@@ -65,7 +65,7 @@
   </div>
 </template>
 <script>
-import encrypt from '@/utils.js'
+import utils from '@/utils.js'
 export default {
   methods: {
     submitForm(formName) {
@@ -73,21 +73,20 @@ export default {
         if (valid) {
           this.axios({
             method: 'post',
-            url: '/api/register.php',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
             data: {
-              username: this.register_form.username,
-              password: encrypt.EncryptSha1(this.register_form.password),
-              nickname: this.register_form.nickname,
-              server_0: this.register_form.server_select[0],
-              server_1: this.register_form.server_select[1],
-              club: this.register_form.club
+              action: 'register',
+              data: {
+                username: this.register_form.username,
+                password: utils.EncryptSha1(this.register_form.password),
+                nickname: this.register_form.nickname,
+                server_0: this.register_form.server_select[0],
+                server_1: this.register_form.server_select[1],
+                club: this.register_form.club
+              }
             }
           })
             .then(response => {
-              if (response.data == 'success') {
+              if (response.data.state === 'success') {
                 this.$message({
                   type: 'success',
                   message: '注册成功！'
@@ -98,7 +97,7 @@ export default {
                   type: 'error',
                   message: '注册失败！'
                 })
-                console.log(response.data)
+                console.log(response.data.message)
               }
             })
             .catch(response => {
@@ -109,16 +108,6 @@ export default {
           return false
         }
       })
-    },
-    getServer() {
-      this.axios
-        .get('static/data/server.json')
-        .then(response => {
-          this.server = response.data.options
-        })
-        .catch(response => {
-          console.log(response)
-        })
     }
   },
   data() {
@@ -175,8 +164,7 @@ export default {
         { max: 20, message: '长度在 0 到 20 个字符', trigger: 'blur' }
       ]
     }
-    var server
-    this.getServer()
+    const server = require('../../static/data/server.json').options
     return {
       register_form,
       rules,

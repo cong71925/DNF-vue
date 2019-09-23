@@ -92,9 +92,5 @@ const router = new Router({
     }
   ]
 })
-router.beforeEach((to, from, next) => {
-  router.app.getState()
-  next()
-})
 
 export default router

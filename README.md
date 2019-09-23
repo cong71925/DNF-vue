@@ -2,6 +2,12 @@
 
 > A Vue.js project
 
+## 项目说明
+
+``` bash
+文档会补的，在做了在做了（咕咕咕）
+
+```
 ## Build Setup
 
 ``` bash

@@ -1,5 +1,4 @@
 const CryptoJS = require('crypto-js')
-
 const key = CryptoJS.enc.Utf8.parse('1234123412ABCDEF')
 const iv = CryptoJS.enc.Utf8.parse('9B7D5F12B419361C')
 
@@ -21,8 +20,76 @@ function EncryptSha1 (word) {
   let encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 })
   return encrypted.ciphertext.toString().toUpperCase()
 }
+function GetLiftRatioDefault (buffDefault, buffAtk, buffBurst, class1) {
+  var ratio = 0
+  const templateAtk = 2400
+  const templateDefault = 3000
+  if (class1 === '炽天使') {
+    ratio =
+      ((Number(buffDefault) * 1.3 +
+        Number(buffBurst) +
+        500 +
+        templateDefault) *
+        (Number(buffAtk) * 1.3 + templateAtk)) /
+      (templateAtk * templateDefault)
+  } else if (class1 === '神思者') {
+    ratio =
+      ((Number(buffDefault) +
+        Number(buffBurst) +
+        300 +
+        templateDefault) *
+        (Number(buffAtk) + templateAtk)) /
+      (templateAtk * templateDefault)
+  } else if (class1 === '冥月女神') {
+    ratio =
+      ((Number(buffDefault) * 1.25 * 1.075 +
+        Number(buffBurst) +
+        500 +
+        templateDefault) *
+        (Number(buffAtk) * 1.25 * 1.075 + templateAtk)) /
+      (templateAtk * templateDefault)
+  }
+  return ratio.toFixed(2)
+}
+function GetLiftRatioBurst (buffDefault, buffAtk, buffBurst, class1) {
+  var ratio = 0
+  const templateAtk = 2400
+  const templateDefault = 3000
+  const systemBuff = 8000
+  if (class1 === '炽天使') {
+    ratio =
+      ((Number(buffDefault) * 1.3 +
+        Number(buffBurst) +
+        500 +
+        systemBuff +
+        templateDefault) *
+        (Number(buffAtk) * 1.3 + templateAtk)) /
+      (templateAtk * (templateDefault + systemBuff))
+  } else if (class1 === '神思者') {
+    ratio =
+      ((Number(buffDefault) +
+        Number(buffBurst) +
+        300 +
+        systemBuff +
+        templateDefault) *
+        (Number(buffAtk) + templateAtk)) /
+      (templateAtk * (templateDefault + systemBuff))
+  } else if (class1 === '冥月女神') {
+    ratio =
+      ((Number(buffDefault) * 1.25 * 1.075 +
+        Number(buffBurst) +
+        500 +
+        systemBuff +
+        templateDefault) *
+        (Number(buffAtk) * 1.25 * 1.075 + templateAtk)) /
+      (templateAtk * (templateDefault + systemBuff))
+  }
+  return ratio.toFixed(2)
+}
 export default {
   Decrypt,
   Encrypt,
-  EncryptSha1
+  EncryptSha1,
+  GetLiftRatioDefault,
+  GetLiftRatioBurst
 }

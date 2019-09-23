@@ -1,24 +1,32 @@
 <template>
   <el-dialog title="添加角色" :visible.sync="visible">
-    <el-form :label-width="'80px'" :model="form" status-icon :rules="rules" ref="form">
+    <el-form :model="form" status-icon :rules="rules" ref="form" label-position="top">
       <el-form-item label="角色名:" prop="character_name">
         <el-input size="mini" v-model="form.character_name" show-word-limit maxlength="20"></el-input>
       </el-form-item>
-      <el-form-item label="职责:" prop="job">
-        <el-cascader
-          v-model="form.job"
-          :options="job"
-          size="mini"
-          :props="{ expandTrigger: 'hover' }"
-        ></el-cascader>
-      </el-form-item>
-      <el-form-item label="职业:" prop="class">
-        <el-cascader
-          v-model="form.class"
-          :options="class_sub"
-          size="mini"
-          :props="{ expandTrigger: 'hover' }"
-        ></el-cascader>
+      <el-form-item label="职业:" required>
+        <el-col :xs="11" :sm="10" :md="8" :lg="6">
+          <el-form-item prop="job">
+            <el-cascader
+              v-model="form.job"
+              :options="job"
+              size="mini"
+              :props="{ expandTrigger: 'hover' }"
+            ></el-cascader>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2" style="text-align: center;">-</el-col>
+        <el-col :xs="11" :sm="10" :md="8" :lg="6">
+          <el-form-item prop="class">
+            <el-cascader
+              v-model="form.class"
+              :options="class_sub"
+              size="mini"
+              prop="class"
+              :props="{ expandTrigger: 'hover' }"
+            ></el-cascader>
+          </el-form-item>
+        </el-col>
       </el-form-item>
       <div v-if="form.job=='奶'">
         <el-form-item label="常驻力智" prop="buff_default">
@@ -53,7 +61,6 @@
 <script>
 export default {
   props: ['dialogVisible', 'job', 'class_sub'],
-
   watch: {
     dialogVisible(val) {
       this.visible = val
@@ -68,26 +75,25 @@ export default {
         if (valid) {
           this.axios({
             method: 'post',
-            url: '/api/addCharacter.php',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
             data: {
-              user_id: this.$store.state.user_id,
-              user_token: this.$store.state.user_token,
-              character_name: this.form.character_name,
-              job: this.form.job[0],
-              class_0: this.form.class[0],
-              class_1: this.form.class[1],
-              damage_15s: this.form.damage_15s,
-              damage_20s: this.form.damage_20s,
-              buff_default: this.form.buff_default,
-              buff_atk: this.form.buff_atk,
-              buff_burst: this.form.buff_burst
+              action: 'addCharacter',
+              data: {
+                user_id: this.$store.state.user_id,
+                user_token: this.$store.state.user_token,
+                character_name: this.form.character_name,
+                job: this.form.job[0],
+                class_0: this.form.class[0],
+                class_1: this.form.class[1],
+                damage_15s: this.form.damage_15s,
+                damage_20s: this.form.damage_20s,
+                buff_default: this.form.buff_default,
+                buff_atk: this.form.buff_atk,
+                buff_burst: this.form.buff_burst
+              }
             }
           })
             .then(response => {
-              if (response.data === 'success') {
+              if (response.data.state === 'success') {
                 this.$message({
                   type: 'success',
                   message: '添加成功!'
@@ -95,7 +101,6 @@ export default {
                 this.$refs[formName].resetFields()
                 this.$emit('update')
                 this.visible = false
-                console.log(response.data)
               } else {
                 this.$message({
                   type: 'error',

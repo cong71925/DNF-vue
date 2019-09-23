@@ -3,7 +3,10 @@
     <el-card class="card">
       <el-collapse accordion>
         <el-collapse-item style="text-align: left;">
-          <template slot="title">角色信息：{{ character.character_name }}</template>
+          <template slot="title">
+            <el-image style="width: 40px; height: 40px" :src="url" :fit="'fit'"></el-image>
+            {{ character.character_name }}
+          </template>
           <el-row>
             <el-col :span="12">职责:</el-col>
             <el-col :span="12">{{ character.job }}</el-col>
@@ -17,9 +20,9 @@
               <el-col :span="12">常驻太阳:</el-col>
               <el-col :span="12">{{ character.buff_burst }}</el-col>
               <el-col :span="12">无系统奶提升率:</el-col>
-              <el-col :span="12">{{ getLiftRatioDefault }}倍</el-col>
+              <el-col :span="12">{{ liftRatioDefault }}倍</el-col>
               <el-col :span="12">有系统奶提升率:</el-col>
-              <el-col :span="12">{{ getLiftRatioBurst }}倍</el-col>
+              <el-col :span="12">{{ liftRatioBurst }}倍</el-col>
             </div>
             <div v-else>
               <el-col :span="12">15s绿纱袋:</el-col>
@@ -27,18 +30,6 @@
               <el-col :span="12">20s绿纱袋:</el-col>
               <el-col :span="12">{{ character.damage_20s }}e</el-col>
             </div>
-          </el-row>
-        </el-collapse-item>
-        <el-collapse-item title="已打团本次数" style="text-align: left;">
-          <el-row>
-            <el-col :span="12">卢克:</el-col>
-            <el-col :span="12">{{ character.luke }}次</el-col>
-            <el-col :span="12">泰波尔斯:</el-col>
-            <el-col :span="12">{{ character.tayberrs }}次</el-col>
-            <el-col :span="12">超时空漩涡:</el-col>
-            <el-col :span="12">{{ character.fiend }}次</el-col>
-            <el-col :span="12">普雷·伊西斯:</el-col>
-            <el-col :span="12">{{ character.isis }}次</el-col>
           </el-row>
         </el-collapse-item>
         <el-collapse-item title="修改信息">
@@ -118,51 +109,6 @@
               </el-form-item>
             </div>
             <el-divider />
-            <el-form-item label="卢克已打">
-              <el-input-number
-                v-model.number="form.luke"
-                :min="0"
-                :max="2"
-                :step="1"
-                step-strictly
-                size="mini"
-                :disabled="modify"
-              ></el-input-number>
-            </el-form-item>
-            <el-form-item label="泰波尔斯">
-              <el-input-number
-                v-model.number="form.tayberrs"
-                :min="0"
-                :max="2"
-                :step="1"
-                step-strictly
-                size="mini"
-                :disabled="modify"
-              ></el-input-number>
-            </el-form-item>
-            <el-form-item label="漩涡已打">
-              <el-input-number
-                v-model.number="form.fiend"
-                :min="0"
-                :max="2"
-                :step="1"
-                step-strictly
-                size="mini"
-                :disabled="modify"
-              ></el-input-number>
-            </el-form-item>
-            <el-form-item label="伊西斯已打">
-              <el-input-number
-                v-model.number="form.isis"
-                :min="0"
-                :max="2"
-                :step="1"
-                step-strictly
-                size="mini"
-                :disabled="modify"
-              ></el-input-number>
-            </el-form-item>
-            <el-divider />
             <el-form-item v-if="modify">
               <el-button type="danger" @click="removeCharacter()">删除</el-button>
               <el-button type="primary" @click="setModifyFalse()">修改</el-button>
@@ -178,74 +124,27 @@
   </el-col>
 </template>
 <script>
+import utils from '@/utils.js'
 export default {
   props: ['job', 'class_sub', 'character'],
   computed: {
-    getLiftRatioDefault() {
-      var ratio = 0
-      const template_atk = 2400
-      const template_default = 3000
-      if (this.character.class_1 === '炽天使') {
-        ratio =
-          ((Number(this.character.buff_default) * 1.3 +
-            Number(this.character.buff_burst) +
-            500 +
-            template_default) *
-            (Number(this.character.buff_atk) * 1.3 + template_atk)) /
-          (template_atk * template_default)
-      } else if (this.character.class_1 === '神思者') {
-        ratio =
-          ((Number(this.character.buff_default) +
-            Number(this.character.buff_burst) +
-            300 +
-            template_default) *
-            (Number(this.character.buff_atk) + template_atk)) /
-          (template_atk * template_default)
-      } else if (this.character.class_1 === '冥月女神') {
-        ratio =
-          ((Number(this.character.buff_default) * 1.25 * 1.15 +
-            Number(this.character.buff_burst) +
-            500 +
-            template_default) *
-            (Number(this.character.buff_atk) * 1.25 * 1.15 + template_atk)) /
-          (template_atk * template_default)
-      }
-      return ratio.toFixed(2)
+    liftRatioDefault() {
+      var ratio = utils.GetLiftRatioDefault(
+        this.character.buff_default,
+        this.character.buff_atk,
+        this.character.buff_burst,
+        this.character.class_1
+      )
+      return ratio
     },
-    getLiftRatioBurst() {
-      var ratio = 0
-      const template_atk = 2400
-      const template_default = 3000
-      const system_buff = 8000
-      if (this.character.class_1 === '炽天使') {
-        ratio =
-          ((Number(this.character.buff_default) * 1.3 +
-            Number(this.character.buff_burst) +
-            500 +
-            system_buff +
-            template_default) *
-            (Number(this.character.buff_atk) * 1.3 + template_atk)) /
-          (template_atk * (template_default + system_buff))
-      } else if (this.character.class_1 === '神思者') {
-        ratio =
-          ((Number(this.character.buff_default) +
-            Number(this.character.buff_burst) +
-            300 +
-            system_buff +
-            template_default) *
-            (Number(this.character.buff_atk) + template_atk)) /
-          (template_atk * (template_default + system_buff))
-      } else if (this.character.class_1 === '冥月女神') {
-        ratio =
-          ((Number(this.character.buff_default) * 1.25 * 1.15 +
-            Number(this.character.buff_burst) +
-            500 +
-            system_buff +
-            template_default) *
-            (Number(this.character.buff_atk) * 1.25 * 1.15 + template_atk)) /
-          (template_atk * (template_default + system_buff))
-      }
-      return ratio.toFixed(2)
+    liftRatioBurst() {
+      var ratio = utils.GetLiftRatioBurst(
+        this.character.buff_default,
+        this.character.buff_atk,
+        this.character.buff_burst,
+        this.character.class_1
+      )
+      return ratio
     }
   },
   methods: {
@@ -274,25 +173,27 @@ export default {
         .then(() => {
           this.axios({
             method: 'post',
-            url: '/api/removeCharacter.php',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
             data: {
-              user_id: this.$store.state.user_id,
-              user_token: this.$store.state.user_token,
-              character_id: this.character.id
+              action: 'removeCharacter',
+              data: {
+                user_id: this.$store.state.user_id,
+                user_token: this.$store.state.user_token,
+                character_id: this.character.id
+              }
             }
           })
             .then(response => {
-              if (response.data === 'success') {
+              if (response.data.state === 'success') {
                 this.$message({
                   type: 'success',
                   message: '删除成功!'
                 })
                 this.$emit('update')
-                console.log(response.data)
               } else {
+                this.$message({
+                  type: 'error',
+                  message: '删除失败!'
+                })
                 console.log(response.data)
               }
             })
@@ -310,39 +211,43 @@ export default {
     modifyCharacter() {
       this.axios({
         method: 'post',
-        url: '/api/modifyCharacter.php',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
         data: {
-          user_id: this.$store.state.user_id,
-          user_token: this.$store.state.user_token,
-          character_id: this.form.character_id,
-          character_name: this.form.character_name,
-          job: this.form.job[0],
-          class_0: this.form.class[0],
-          class_1: this.form.class[1],
-          damage_15s: this.form.damage_15s,
-          damage_20s: this.form.damage_20s,
-          buff_default: this.form.buff_default,
-          buff_atk: this.form.buff_atk,
-          buff_burst: this.form.buff_burst,
-          luke: this.form.luke,
-          tayberrs: this.form.tayberrs,
-          fiend: this.form.fiend,
-          isis: this.form.isis
+          action: 'modifyCharacter',
+          data: {
+            user_id: this.$store.state.user_id,
+            user_token: this.$store.state.user_token,
+            character_id: this.form.character_id,
+            character_name: this.form.character_name,
+            job: this.form.job[0],
+            class_0: this.form.class[0],
+            class_1: this.form.class[1],
+            damage_15s: this.form.damage_15s,
+            damage_20s: this.form.damage_20s,
+            buff_default: this.form.buff_default,
+            buff_atk: this.form.buff_atk,
+            buff_burst: this.form.buff_burst
+          }
         }
       })
         .then(response => {
-          if (response.data === 'success') {
+          if (response.data.state === 'success') {
             this.$message({
               type: 'success',
               message: '修改成功!'
             })
             this.setModifyTrue()
+            this.url =
+              'static/image/face/' +
+              this.form.class[0] +
+              '/' +
+              this.form.class[1] +
+              '.png'
             this.$emit('update')
-            console.log(response.data)
           } else {
+            this.$message({
+              type: 'error',
+              message: '修改失败!'
+            })
             console.log(response.data)
           }
         })
@@ -358,6 +263,12 @@ export default {
     class_select[0] = this.character.class_0
     class_select[1] = this.character.class_1
     job_select[0] = this.character.job
+    var url =
+      'static/image/face/' +
+      this.character.class_0 +
+      '/' +
+      this.character.class_1 +
+      '.png'
     var form = {
       character_id: this.character.id,
       character_name: this.character.character_name,
@@ -368,10 +279,6 @@ export default {
       buff_default: this.character.buff_default,
       buff_atk: this.character.buff_atk,
       buff_burst: this.character.buff_burst,
-      luke: this.character.luke,
-      tayberrs: this.character.tayberrs,
-      fiend: this.character.fiend,
-      isis: this.character.isis
     }
     const rules = {
       character_name: [
@@ -400,7 +307,8 @@ export default {
       class_select,
       job_select,
       rules,
-      form
+      form,
+      url
     }
   }
 }

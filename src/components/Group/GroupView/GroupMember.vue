@@ -14,23 +14,26 @@ import GroupMemberItem from './GroupMemberItem.vue'
 export default {
   components: { GroupMemberItem },
   methods: {
-    getMemberInfo() {
+    getMemberList() {
       this.axios({
         method: 'post',
-        url: '/api/getMemberInfo.php',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
         data: {
-          user_id: this.$store.state.user_id,
-          user_token: this.$store.state.user_token,
-          group_id: this.$route.params.id
+          action: 'getMemberList',
+          data: {
+            user_id: this.$store.state.user_id,
+            user_token: this.$store.state.user_token,
+            group_id: this.$route.params.id
+          }
         }
       })
         .then(response => {
-          if (response.data !== 'error') {
-            this.memberList = response.data.memberList
+          if (response.data.state === 'success') {
+            this.memberList = response.data.result
           } else {
+            this.$message({
+              type: 'error',
+              message: '获取数据错误！'
+            })
             console.log(response.data)
           }
         })
@@ -40,7 +43,7 @@ export default {
     }
   },
   data() {
-    this.getMemberInfo()
+    this.getMemberList()
     return {
       memberList: ''
     }

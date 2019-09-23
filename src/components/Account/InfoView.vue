@@ -50,20 +50,19 @@ export default {
     getUserInfo() {
       this.axios({
         method: 'post',
-        url: '/api/getUserInfo.php',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
         data: {
-          user_id: this.$store.state.user_id,
-          user_token: this.$store.state.user_token
+          action: 'getUserInfo',
+          data: {
+            user_id: this.$store.state.user_id,
+            user_token: this.$store.state.user_token
+          }
         }
       })
         .then(response => {
-          if (response.data === 'error') {
-            console.log(response.data)
+          if (response.data.state === 'success') {
+            this.user = response.data.result
           } else {
-            this.user = response.data
+            console.log(response.data.message)
           }
         })
         .catch(response => {
@@ -72,16 +71,8 @@ export default {
     }
   },
   data() {
-    var user = {
-      username: '',
-      nickname: '',
-      club: '',
-      server_0: '',
-      server_1: '',
-      create_time: ''
-    }
     this.getUserInfo()
-    return { user }
+    return { user: '' }
   }
 }
 </script>

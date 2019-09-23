@@ -19,6 +19,7 @@
               show-word-limit
               show-password
               autocomplete="off"
+              @keyup.enter.native="submitForm('login_form')"
             ></el-input>
           </el-form-item>
           <el-form-item>
@@ -30,7 +31,7 @@
   </div>
 </template>
 <script>
-import encrypt from '@/utils.js'
+import utils from '@/utils.js'
 export default {
   methods: {
     login() {
@@ -41,38 +42,39 @@ export default {
         if (valid) {
           this.axios({
             method: 'post',
-            url: '/api/login.php',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
             data: {
-              username: this.login_form.username,
-              password: encrypt.EncryptSha1(this.login_form.password)
+              action: 'login',
+              data: {
+                username: this.login_form.username,
+                password: utils.EncryptSha1(this.login_form.password)
+              }
             }
           })
             .then(response => {
-              if (response.data == 'error:username select failed') {
-                console.log(response.data)
-                this.login_form.username = null
-                this.login_form.password = null
-                this.$message({
-                  type: 'error',
-                  message: '用户名不存在！'
-                })
-              } else if (response.data == 'error:password error') {
-                console.log(response.data)
-                this.login_form.password = null
-                this.$message({
-                  type: 'error',
-                  message: '密码错误！'
-                })
-              } else {
-                this.$store.commit('setLoginState', response.data)
+              if (response.data.state == 'success') {
+                this.$store.commit('setLoginState', response.data.result)
                 this.$message({
                   type: 'success',
                   message: '成功登录！'
                 })
                 this.$router.push('/')
+              } else if (response.data.state == 'error') {
+                if (response.data.message == 'password error') {
+                  this.login_form.password = null
+                  this.$message({
+                    type: 'error',
+                    message: '密码错误！'
+                  })
+                } else if (response.data.message == 'username error') {
+                  this.login_form.username = null
+                  this.login_form.password = null
+                  this.$message({
+                    type: 'error',
+                    message: '用户名不存在！'
+                  })
+                } else {
+                  console.log(response.data)
+                }
               }
             })
             .catch(response => {

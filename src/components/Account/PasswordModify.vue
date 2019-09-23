@@ -18,7 +18,7 @@
   </div>
 </template>
 <script>
-import encrypt from '@/utils.js'
+import utils from '@/utils.js'
 export default {
   methods: {
     submitForm(formName) {
@@ -26,24 +26,30 @@ export default {
         if (valid) {
           this.axios({
             method: 'post',
-            url: '/api/modifyPassword.php',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
             data: {
-              user_id: this.$store.state.user_id,
-              user_token: this.$store.state.user_token,
-              password_0: encrypt.EncryptSha1(this.password.password_0),
-              password_1: encrypt.EncryptSha1(this.password.password_1)
+              action: 'modifyUserPassword',
+              data: {
+                user_id: this.$store.state.user_id,
+                user_token: this.$store.state.user_token,
+                password_0: utils.EncryptSha1(this.password.password_0),
+                password_1: utils.EncryptSha1(this.password.password_1)
+              }
             }
           })
             .then(response => {
-              if (response.data == 'success') {
-                alert('修改成功')
+              if (response.data.state === 'success') {
+                this.$message({
+                  type: 'success',
+                  message: '修改成功！'
+                })
                 this.password.password_0 = null
                 this.password.password_1 = null
                 this.password.password_2 = null
               } else {
+                this.$message({
+                  type: 'error',
+                  message: '修改失败！请检查密码是否正确'
+                })
                 console.log(response.data)
                 this.password.password_0 = null
                 this.password.password_1 = null
@@ -52,12 +58,8 @@ export default {
             })
             .catch(response => {
               console.log(response)
-              this.password.password_0 = null
-              this.password.password_1 = null
-              this.password.password_2 = null
             })
         } else {
-          alert('error submit!!')
           console.log('error submit!!')
           return false
         }

@@ -1,6 +1,7 @@
 <template>
   <el-card class="box-card">
     <div slot="header" class="clearfix">
+      <el-image style="width: 40px; height: 40px" :src="url" :fit="'fit'"></el-image>
       <span>{{ characterInfo.character_name }}</span>
     </div>
     <div>
@@ -37,22 +38,33 @@
         </el-row>
       </div>
     </div>
-    <el-divider></el-divider>
-    <el-row>
-      <el-col :span="12">卢克已打次数:{{ characterInfo.luke }}</el-col>
-      <el-col :span="12">泰波尔斯已打次数:{{ characterInfo.tayberrs }}</el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="12">伊西斯已打次数:{{ characterInfo.isis }}</el-col>
-      <el-col :span="12">漩涡已打次数:{{ characterInfo.fiend }}</el-col>
-    </el-row>
   </el-card>
 </template>
 <script>
 export default {
   props: ['characterInfo'],
   data() {
-    return {}
+    var url =
+      'static/image/face/' +
+      this.characterInfo.class_0 +
+      '/' +
+      this.characterInfo.class_1 +
+      '.png'
+    return {
+      url
+    }
   }
 }
 </script>
+<style scoped>
+.el-card__header {
+  padding: 5px;
+}
+.el-image {
+  overflow: unset;
+}
+.el-card__item--card {
+  width: 50%;
+  min-width: 170px;
+}
+</style>

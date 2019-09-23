@@ -1,22 +1,22 @@
 <template>
   <el-container>
-    <el-aside width="200px">
-      <el-menu default-active="/groupview/info">
+    <el-aside width="auto">
+      <el-menu :default-active="activeName" :collapse="isCollapse">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-s-custom"></i>
             <span>团队总览</span>
           </template>
           <el-menu-item-group>
-            <el-menu-item index="1-1" @click="goto('GroupInfo')">概览</el-menu-item>
-            <el-menu-item index="1-2" @click="goto('GroupMember')">成员</el-menu-item>
+            <el-menu-item index="GroupInfo" @click="goto('GroupInfo')">概览</el-menu-item>
+            <el-menu-item index="GroupMember" @click="goto('GroupMember')">成员</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="2" @click="goto('GroupCharacter')">
+        <el-menu-item index="GroupCharacter" @click="goto('GroupCharacter')">
           <i class="el-icon-user"></i>
           <span slot="title">角色总览</span>
         </el-menu-item>
-        <el-menu-item index="3" @click="goto('GroupSetting')">
+        <el-menu-item index="GroupSetting" @click="goto('GroupSetting')">
           <i class="el-icon-setting"></i>
           <span slot="title">团队管理</span>
         </el-menu-item>
@@ -30,9 +30,32 @@
   </el-container>
 </template>
 <script>
-import groupSetting from './GroupSetting.vue'
 export default {
-  components: { groupSetting },
+  watch: {
+    screenWidth(val) {
+      if (!this.timer) {
+        this.screenWidth = val
+        this.timer = true
+        let that = this
+        setTimeout(function() {
+          if (that.screenWidth < 768) {
+            that.isCollapse = true
+          } else {
+            that.isCollapse = false
+          }
+          that.timer = false
+        }, 400)
+      }
+    }
+  },
+  mounted() {
+    window.onresize = () => {
+      return (() => {
+        window.screenWidth = document.body.clientWidth
+        this.screenWidth = window.screenWidth
+      })()
+    }
+  },
   methods: {
     goto(gotoName) {
       this.$router.push({
@@ -42,9 +65,16 @@ export default {
     }
   },
   data() {
-    var id = this.$route.params.id
+    var screenWidth = document.body.clientWidth
+    var isCollapse = false
+    if(screenWidth < 768){
+      isCollapse = true
+    }
     return {
-      activeName: '1'
+      id: this.$route.params.id,
+      activeName: this.$route.name,
+      screenWidth,
+      isCollapse
     }
   }
 }

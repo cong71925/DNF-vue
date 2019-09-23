@@ -2,11 +2,15 @@
   <el-container>
     <el-main>
       <el-input placeholder="请输入要查找的团队ID" v-model.number="searchInput" class="input-with-select">
-        <el-button slot="prepend" icon="el-icon-plus" @click="dialogVisible = true">创建团队</el-button>
-        <el-button slot="append" icon="el-icon-search" @click="searchVisible = true">查找团队</el-button>
+        <el-tooltip class="item" effect="dark" content="创建团队" placement="top-start" slot="prepend">
+          <el-button icon="el-icon-plus" @click="dialogVisible = true"></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="查找团队" placement="top-start" slot="append">
+          <el-button icon="el-icon-search" @click="searchVisible = true"></el-button>
+        </el-tooltip>
       </el-input>
       <el-divider></el-divider>
-      <el-row :gutter="20" v-loading="loading">
+      <el-row :gutter="20">
         <div v-for="item in group" :key="item.id">
           <groupItem :group="item" />
         </div>
@@ -18,7 +22,7 @@
         @update="getGroup"
       />
     </el-main>
-    <el-footer>
+    <el-footer height="30px" >
       <el-pagination
         layout="prev, pager, next"
         :total="nums"
@@ -43,20 +47,18 @@ export default {
       this.loading = true
       this.axios({
         method: 'post',
-        url: '/api/getGroupList.php',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
         data: {
-          user_id: this.$store.state.user_id,
-          user_token: this.$store.state.user_token,
-          page: this.page
+          action: 'getGroupList',
+          data: {
+            user_id: this.$store.state.user_id,
+            user_token: this.$store.state.user_token,
+            page: this.page
+          }
         }
       })
         .then(response => {
-          this.group = response.data.groupList
-          this.nums = Number(response.data.nums)
-          this.loading = false
+          this.group = response.data.result.groupList
+          this.nums = Number(response.data.result.groupNums)
         })
         .catch(response => {
           console.log(response.data)
@@ -79,7 +81,6 @@ export default {
       page: 1,
       nums: 0,
       group,
-      loading: true,
       searchInput: ''
     }
   }

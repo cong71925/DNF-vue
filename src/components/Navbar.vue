@@ -1,9 +1,47 @@
 <template>
   <div id="navbar">
-    <el-menu class="el-menu-demo" mode="horizontal" :router="true">
-      <el-menu-item index="/">首页</el-menu-item>
-      <el-menu-item index="/group">我的小团体</el-menu-item>
-      <el-menu-item index="/character">我的角色</el-menu-item>
+    <el-menu class="el-menu-demo" mode="horizontal" :router="true" :default-active="activeName"
+    style="background-color: rgba(255, 255, 255, 0.9);">
+      <el-menu-item index="/">
+        <div class="hidden-xs-only">
+          <i class="el-icon-s-home"></i>首页
+        </div>
+        <el-tooltip
+          class="item hidden-sm-and-up"
+          effect="dark"
+          content="首页"
+          placement="bottom-start"
+        >
+          <i class="el-icon-s-home"></i>
+        </el-tooltip>
+      </el-menu-item>
+      <el-menu-item index="/group">
+        <div class="hidden-xs-only">
+          <i class="el-icon-trophy"></i>我的小团体
+        </div>
+        <el-tooltip
+          class="item hidden-sm-and-up"
+          effect="dark"
+          content="我的小团体"
+          placement="bottom-start"
+        >
+          <i class="el-icon-trophy"></i>
+        </el-tooltip>
+      </el-menu-item>
+      <el-menu-item index="/character">
+        <div class="hidden-xs-only">
+          <i class="el-icon-c-scale-to-original"></i>我的角色
+        </div>
+        <el-tooltip
+          class="item hidden-sm-and-up"
+          effect="dark"
+          content="我的角色"
+          placement="bottom-start"
+        >
+          <i class="el-icon-c-scale-to-original"></i>
+        </el-tooltip>
+      </el-menu-item>
+
       <el-submenu index id="user" v-if="$store.state.isLogin">
         <template slot="title">
           <i class="el-icon-user"></i>
@@ -26,22 +64,19 @@ export default {
   name: 'Navbar',
   methods: {
     logout() {
-      if (
-        localStorage.getItem('user_id') &&
-        localStorage.getItem('user_token')
-      ) {
+      if (this.$store.state.isLogin) {
         this.axios({
           method: 'post',
-          url: '/api/logout.php',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-          },
           data: {
-            user_id: localStorage.getItem('user_id')
+            action: 'logout',
+            data: {
+              user_id: this.$store.state.user_id,
+              user_token: this.$store.state.user_token
+            }
           }
         })
           .then(response => {
-            if (response.data == 'logout success') {
+            if (response.data.state == 'success') {
               this.$store.commit('setLogoutState')
               this.$message({
                 type: 'success',
@@ -53,7 +88,7 @@ export default {
                 type: 'success',
                 message: '注销失败！'
               })
-              console.log(response.data)
+              console.log(response.data.message)
             }
           })
           .catch(response => {
@@ -65,7 +100,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      activeName: this.$route.path
+    }
   }
 }
 </script>
