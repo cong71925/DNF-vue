@@ -54,6 +54,7 @@ export default {
               if (response.data.state == 'success') {
                 this.$store.commit('setLoginState', response.data.result)
                 this.$message({
+                  showClose: true,
                   type: 'success',
                   message: '成功登录！'
                 })
@@ -62,6 +63,7 @@ export default {
                 if (response.data.message == 'password error') {
                   this.login_form.password = null
                   this.$message({
+                    showClose: true,
                     type: 'error',
                     message: '密码错误！'
                   })
@@ -69,6 +71,7 @@ export default {
                   this.login_form.username = null
                   this.login_form.password = null
                   this.$message({
+                    showClose: true,
                     type: 'error',
                     message: '用户名不存在！'
                   })
@@ -90,6 +93,7 @@ export default {
   data() {
     if (this.$store.state.isLogin) {
       this.$message({
+        showClose: true,
         type: 'error',
         message: '您已登录！'
       })

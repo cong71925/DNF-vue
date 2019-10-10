@@ -107,11 +107,11 @@
         <p>
           本站仅为个人学习研究性质，如果你发现网站打不开，那多半是忘了交钱导致vps停机，或者是ip被ban，届时请通过
           <el-link
-            href="mailto:cong71925@gmail.coml"
+            href="mailto:cong71925@gmail.com"
             icon="el-icon-message"
             :underline="false"
             target="_blank"
-          >cong71925@gmail.coml</el-link>联系我，
+          >cong71925@gmail.com</el-link>联系我，
           如果你发现了什么bug或者有什么建议，也可以发邮件至我的邮箱。
         </p>
       </div>
@@ -144,5 +144,6 @@ export default {
 }
 .el-image {
   text-indent: 0;
+  max-width: 90%;
 }
 </style>

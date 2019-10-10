@@ -83,6 +83,7 @@ export default {
             this.groupInfo = response.data.result
           } else {
             this.$message({
+              showClose: true,
               type: 'error',
               message: '获取数据错误！'
             })
@@ -109,6 +110,7 @@ export default {
             this.memberData = response.data.result
           } else {
             this.$message({
+              showClose: true,
               type: 'error',
               message: '获取数据错误！'
             })
@@ -136,6 +138,7 @@ export default {
             this.characterData = response.data.result
           } else {
             this.$message({
+              showClose: true,
               type: 'error',
               message: '获取数据错误！'
             })

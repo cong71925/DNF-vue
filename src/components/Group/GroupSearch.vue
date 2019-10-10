@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="查询结果" :visible.sync="visible">
+  <el-dialog title="查询结果" :visible.sync="visible" width="90%">
     <el-row>
       <el-col :span="12">ID:</el-col>
       <el-col :span="12">{{ searchResult.id }}</el-col>
@@ -86,6 +86,7 @@ export default {
             .then(response => {
               if (response.data.state === 'success') {
                 this.$message({
+                  showClose: true,
                   type: 'success',
                   message: '成功加入！'
                 })
@@ -93,16 +94,19 @@ export default {
                 this.$emit('update')
               } else if (response.data.message === 'in the group'){
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '您已在团队内！'
                 })
               }else if (response.data.message === 'password error'){
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '密码错误！'
                 })
               } else {
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '加入错误！'
                 })

@@ -90,6 +90,7 @@ export default {
             }
           } else {
             this.$message({
+              showClose: true,
               type: 'error',
               message: '获取数据错误！'
             })
@@ -124,6 +125,7 @@ export default {
             }
           } else {
             this.$message({
+              showClose: true,
               type: 'error',
               message: '获取数据错误！'
             })
@@ -175,6 +177,7 @@ export default {
             }
           } else {
             this.$message({
+              showClose: true,
               type: 'error',
               message: '获取数据错误！'
             })

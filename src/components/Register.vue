@@ -88,12 +88,14 @@ export default {
             .then(response => {
               if (response.data.state === 'success') {
                 this.$message({
+                  showClose: true,
                   type: 'success',
                   message: '注册成功！'
                 })
                 this.$router.push('/')
               } else {
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '注册失败！'
                 })
@@ -113,6 +115,7 @@ export default {
   data() {
     if (this.$store.state.isLogin) {
       this.$message({
+        showClose: true,
         type: 'error',
         message: '您已登录！'
       })

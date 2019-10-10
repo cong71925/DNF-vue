@@ -4,12 +4,14 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css'
 import Vue from 'vue'
+import 'vue-g2'
 import App from './App'
 import Vuex from 'vuex'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 
+Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
@@ -25,6 +27,7 @@ axios.interceptors.request.use(function (config) {
   // 对请求错误做些什么
   store.commit('setLoadedState')
   Vue.prototype.$message({
+    showClose: true,
     type: 'error',
     message: '请求失败！'
   })
@@ -35,6 +38,7 @@ axios.interceptors.response.use(function (config) {
   store.commit('setLoadedState')
   if (config.data.state !== 'success') {
     Vue.prototype.$message({
+      showClose: true,
       type: 'error',
       message: '获取数据失败！'
     })

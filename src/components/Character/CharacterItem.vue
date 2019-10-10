@@ -1,6 +1,6 @@
 <template>
   <el-col :xs="24" :sm="12" :md="8" :lg="6">
-    <el-card class="card">
+    <el-card>
       <el-collapse accordion>
         <el-collapse-item style="text-align: left;">
           <template slot="title">
@@ -8,16 +8,16 @@
             {{ character.character_name }}
           </template>
           <el-row>
-            <el-col :span="12">职责:</el-col>
-            <el-col :span="12">{{ character.job }}</el-col>
             <el-col :span="12">职业:</el-col>
             <el-col :span="12">{{ character.class_1 }}</el-col>
+            <el-col :span="12">职责:</el-col>
+            <el-col :span="12">{{ character.job }}</el-col>
             <div v-if="character.job == '奶'">
               <el-col :span="12">常驻力智:</el-col>
               <el-col :span="12">{{ character.buff_default }}</el-col>
               <el-col :span="12">常驻三攻:</el-col>
               <el-col :span="12">{{ character.buff_atk }}</el-col>
-              <el-col :span="12">常驻太阳:</el-col>
+              <el-col :span="12">太阳力智:</el-col>
               <el-col :span="12">{{ character.buff_burst }}</el-col>
               <el-col :span="12">无系统奶提升率:</el-col>
               <el-col :span="12">{{ liftRatioDefault }}倍</el-col>
@@ -31,6 +31,8 @@
               <el-col :span="12">{{ character.damage_20s }}e</el-col>
             </div>
           </el-row>
+          <el-divider />
+          <el-button type="primary" icon="el-icon-s-marketing" @click="setHistoricalDataVisible" style="width:100%;">历史数据</el-button>
         </el-collapse-item>
         <el-collapse-item title="修改信息">
           <el-form :model="form" ref="form" label-width="90px" :rules="rules">
@@ -108,16 +110,35 @@
                 </el-input>
               </el-form-item>
             </div>
-            <el-divider />
-            <el-form-item v-if="modify">
-              <el-button type="danger" @click="removeCharacter()">删除</el-button>
-              <el-button type="primary" @click="setModifyFalse()">修改</el-button>
-            </el-form-item>
-            <el-form-item v-else>
-              <el-button @click="setModifyTrue()">取消</el-button>
-              <el-button type="primary" @click="submitForm('form')">提交</el-button>
-            </el-form-item>
           </el-form>
+          <el-divider />
+          <div v-if="modify">
+            <el-button-group style="width:100%;">
+              <el-button
+                type="danger"
+                @click="removeCharacter()"
+                icon="el-icon-delete"
+                style="width:50%;"
+              >删除</el-button>
+              <el-button
+                type="primary"
+                @click="setModifyFalse()"
+                icon="el-icon-edit"
+                style="width:50%;"
+              >修改</el-button>
+            </el-button-group>
+          </div>
+          <div v-else>
+            <el-button-group style="width:100%;">
+              <el-button @click="setModifyTrue()" style="width:50%;" icon="el-icon-refresh-left">取消</el-button>
+              <el-button
+                type="primary"
+                @click="submitForm('form')"
+                icon="el-icon-upload2"
+                style="width:50%;"
+              >提交</el-button>
+            </el-button-group>
+          </div>
         </el-collapse-item>
       </el-collapse>
     </el-card>
@@ -158,6 +179,9 @@ export default {
         }
       })
     },
+    setHistoricalDataVisible(){
+      this.$emit('getHistoricalData',this.character.id,this.character.job,this.character.class_1)
+    },
     setModifyFalse() {
       this.modify = false
     },
@@ -185,12 +209,14 @@ export default {
             .then(response => {
               if (response.data.state === 'success') {
                 this.$message({
+                  showClose: true,
                   type: 'success',
                   message: '删除成功!'
                 })
                 this.$emit('update')
               } else {
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '删除失败!'
                 })
@@ -203,6 +229,7 @@ export default {
         })
         .catch(() => {
           this.$message({
+            showClose: true,
             type: 'info',
             message: '已取消删除'
           })
@@ -232,6 +259,7 @@ export default {
         .then(response => {
           if (response.data.state === 'success') {
             this.$message({
+              showClose: true,
               type: 'success',
               message: '修改成功!'
             })
@@ -245,6 +273,7 @@ export default {
             this.$emit('update')
           } else {
             this.$message({
+              showClose: true,
               type: 'error',
               message: '修改失败!'
             })
@@ -278,7 +307,7 @@ export default {
       damage_20s: this.character.damage_20s,
       buff_default: this.character.buff_default,
       buff_atk: this.character.buff_atk,
-      buff_burst: this.character.buff_burst,
+      buff_burst: this.character.buff_burst
     }
     const rules = {
       character_name: [
@@ -314,11 +343,5 @@ export default {
 }
 </script>
 <style>
-.card {
-  text-align: center;
-}
-.character_info {
-  text-align: left;
-}
 </style>
 

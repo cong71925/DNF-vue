@@ -31,6 +31,7 @@ export default {
             this.memberList = response.data.result
           } else {
             this.$message({
+              showClose: true,
               type: 'error',
               message: '获取数据错误！'
             })

@@ -1,11 +1,11 @@
 <template>
-  <el-dialog title="添加角色" :visible.sync="visible">
+  <el-dialog title="添加角色" :visible.sync="visible" width="90%">
     <el-form :model="form" status-icon :rules="rules" ref="form" label-position="top">
       <el-form-item label="角色名:" prop="character_name">
         <el-input size="mini" v-model="form.character_name" show-word-limit maxlength="20"></el-input>
       </el-form-item>
       <el-form-item label="职业:" required>
-        <el-col :xs="11" :sm="10" :md="8" :lg="6">
+        <el-col :xs="12" :sm="10" :md="8" :lg="6">
           <el-form-item prop="job">
             <el-cascader
               v-model="form.job"
@@ -15,8 +15,8 @@
             ></el-cascader>
           </el-form-item>
         </el-col>
-        <el-col :span="2" style="text-align: center;">-</el-col>
-        <el-col :xs="11" :sm="10" :md="8" :lg="6">
+       
+        <el-col :xs="12" :sm="10" :md="8" :lg="6">
           <el-form-item prop="class">
             <el-cascader
               v-model="form.class"
@@ -95,6 +95,7 @@ export default {
             .then(response => {
               if (response.data.state === 'success') {
                 this.$message({
+                  showClose: true,
                   type: 'success',
                   message: '添加成功!'
                 })
@@ -103,6 +104,7 @@ export default {
                 this.visible = false
               } else {
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '添加失败!'
                 })

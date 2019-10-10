@@ -39,6 +39,7 @@ export default {
             .then(response => {
               if (response.data.state === 'success') {
                 this.$message({
+                  showClose: true,
                   type: 'success',
                   message: '修改成功！'
                 })
@@ -47,6 +48,7 @@ export default {
                 this.password.password_2 = null
               } else {
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '修改失败！请检查密码是否正确'
                 })

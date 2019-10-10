@@ -1,20 +1,24 @@
 <template>
   <el-container>
     <el-main>
-      <el-row :gutter="20">
-        <el-col :xs="24" :sm="12" :md="8" :lg="6">
-          <el-card class="card">
-            <el-button icon="el-icon-plus" type="primary" @click="dialogVisible = true" circle></el-button>
-            <h4>添加角色</h4>
-          </el-card>
-        </el-col>
-      </el-row>
       <characterAdd
-        :dialogVisible.sync="dialogVisible"
+        :dialogVisible.sync="addVisible"
         @update="getCharacter"
         :job="job"
         :class_sub="class_sub"
       />
+      <characterHistoricalData
+        :dialogVisible.sync="historicalVisible"
+        :job="historicalJob"
+        :id="characterID"
+        :class_1 = "class1"
+        @update="getCharacter"
+      />
+      <el-button-group>
+        <el-button type="primary" icon="el-icon-plus" @click="addVisible = true">添加角色</el-button>
+        <el-button type="primary" icon="el-icon-setting">^_^开发中...</el-button>
+      </el-button-group>
+      <el-divider />
       <el-row :gutter="20">
         <div v-for="item in character" :key="item.id">
           <characterItem
@@ -22,6 +26,7 @@
             :class_sub="class_sub"
             :character="item"
             @update="getCharacter"
+            @getHistoricalData="getHistoricalData"
           />
         </div>
       </el-row>
@@ -39,12 +44,19 @@
 <script>
 import characterItem from './CharacterItem.vue'
 import characterAdd from './CharacterAdd.vue'
+import characterHistoricalData from './CharacterHistoricalData.vue'
 export default {
-  components: { characterItem, characterAdd },
+  components: { characterItem, characterAdd, characterHistoricalData },
   methods: {
     handleCurrentChange(val) {
       this.page = val
       this.getCharacter()
+    },
+    getHistoricalData(id, job, class1) {
+      this.characterID = id
+      this.historicalVisible = true
+      this.historicalJob = job
+      this.class1 = class1
     },
     getCharacter() {
       this.axios({
@@ -62,7 +74,6 @@ export default {
           if (response.data.state === 'success') {
             this.character = response.data.result.characterList
             this.nums = Number(response.data.result.characterNums)
-            this.loading = false
           }
         })
         .catch(response => {
@@ -75,9 +86,9 @@ export default {
     const class_sub = require('../../../static/data/class.json').options
     var page = 1
     var character
-    
     if (!this.$store.state.isLogin) {
       this.$message({
+        showClose: true,
         type: 'error',
         message: '请先登录！'
       })
@@ -85,19 +96,23 @@ export default {
     }
     this.getCharacter()
     return {
-      dialogVisible: false,
+      addVisible: false,
+      historicalVisible: false,
       job,
       class_sub,
       character,
       nums: 0,
       page,
-      value: true
+      value: true,
+      historicalJob: null,
+      characterID: null,
+      class1: null
     }
   }
 }
 </script>
 <style>
-.card {
+#addCard {
   text-align: center;
 }
 .character_info {

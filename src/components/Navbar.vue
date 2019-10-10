@@ -79,12 +79,14 @@ export default {
             if (response.data.state == 'success') {
               this.$store.commit('setLogoutState')
               this.$message({
+                showClose: true,
                 type: 'success',
                 message: '注销成功！'
               })
               this.$router.push({ name: 'Index' })
             } else {
               this.$message({
+                showClose: true,
                 type: 'success',
                 message: '注销失败！'
               })

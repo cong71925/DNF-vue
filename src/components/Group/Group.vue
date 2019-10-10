@@ -69,6 +69,7 @@ export default {
     var group
     if (!this.$store.state.isLogin) {
       this.$message({
+        showClose: true,
         type: 'error',
         message: '请先登录！'
       })

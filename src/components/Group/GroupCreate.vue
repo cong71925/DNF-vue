@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="创建团队" :visible.sync="visible">
+  <el-dialog title="创建团队" :visible.sync="visible" width="90%">
     <el-form
       :model="form"
       status-icon
@@ -53,6 +53,7 @@ export default {
             .then(response => {
               if (response.data.state === 'success') {
                 this.$message({
+                  showClose: true,
                   type: 'success',
                   message: '添加成功!'
                 })
@@ -61,6 +62,7 @@ export default {
                 this.visible = false
               } else {
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '添加失败!'
                 })

@@ -48,11 +48,13 @@ export default {
             .then(response => {
               if (response.data.state === 'success') {
                 this.$message({
+                  showClose: true,
                   type: 'success',
                   message: '修改成功！'
                 })
               } else {
                 this.$message({
+                  showClose: true,
                   type: 'error',
                   message: '修改失败！'
                 })
