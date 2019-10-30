@@ -86,10 +86,62 @@ function GetLiftRatioBurst (buffDefault, buffAtk, buffBurst, class1) {
   }
   return ratio.toFixed(2)
 }
+// 计算奶的提升率
+function GetLiftRatio (buff, job, isSystemBuff, boost, favoritism) {
+  var ratio = 0
+  const buffStrInt = Number(buff.strInt)
+  const buffAtk = Number(buff.atk)
+  const buffBurst = Number(buff.burst)
+  var systemBuff = 8000
+  // 模板C的三攻力智
+  const templateCharacter = {
+    atk: 2400,
+    strInt: 3000
+  }
+  var buffer = {
+    boost: 1,
+    favoritism: 1,
+    aura: 0
+  }
+  if (!isSystemBuff) {
+    systemBuff = 0
+  }
+  switch (job) {
+    case '炽天使':
+      buffer.boost = 1.3
+      buffer.aura = 500
+      break
+    case '神思者':
+      buffer.boost = 1
+      buffer.aura = 300
+      break
+    case '冥月女神':
+      buffer.boost = 1.25
+      buffer.aura = 500
+      buffer.favoritism = 1.15
+      break
+  }
+  if (!boost) {
+    buffer.boost = 1
+  }
+  if (!favoritism) {
+    buffer.favoritism = 1
+  }
+  ratio =
+    ((buffStrInt * buffer.boost * buffer.favoritism +
+      buffBurst +
+      buffer.aura +
+      systemBuff +
+      templateCharacter.strInt) *
+      (buffAtk * buffer.boost * buffer.favoritism + templateCharacter.atk)) /
+    (templateCharacter.atk * (templateCharacter.strInt + systemBuff))
+  return Number(ratio.toFixed(2))
+}
 export default {
   Decrypt,
   Encrypt,
   EncryptSha1,
   GetLiftRatioDefault,
-  GetLiftRatioBurst
+  GetLiftRatioBurst,
+  GetLiftRatio
 }

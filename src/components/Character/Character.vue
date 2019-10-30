@@ -11,19 +11,41 @@
         :dialogVisible.sync="historicalVisible"
         :job="historicalJob"
         :id="characterID"
-        :class_1 = "class1"
+        :class_1="class1"
         @update="getCharacter"
       />
-      <el-button-group>
-        <el-button type="primary" icon="el-icon-plus" @click="addVisible = true">添加角色</el-button>
-        <el-button type="primary" icon="el-icon-setting">^_^开发中...</el-button>
-      </el-button-group>
+      <el-row :gutter="20">
+        <el-col :xs="8" :sm="6" :md="4" :lg="3">
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="addVisible = true"
+            style="width:100%;"
+          >添加角色</el-button>
+        </el-col>
+        <el-col :xs="8" :sm="6" :md="4" :lg="3">
+          <el-card class="el-card" :body-style="{ padding: '10px' }">
+            <div>
+              <el-switch v-model="boost" active-text="唱歌"></el-switch>
+            </div>
+          </el-card>
+        </el-col>
+        <el-col :xs="8" :sm="6" :md="4" :lg="3">
+          <el-card class="el-card" :body-style="{ padding: '10px' }">
+            <div>
+              <el-switch v-model="favoritism" active-text="偏爱"></el-switch>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
       <el-divider />
       <el-row :gutter="20">
         <div v-for="item in character" :key="item.id">
           <characterItem
             :job="job"
             :class_sub="class_sub"
+            :boost="boost"
+            :favoritism="favoritism"
             :character="item"
             @update="getCharacter"
             @getHistoricalData="getHistoricalData"
@@ -106,13 +128,15 @@ export default {
       value: true,
       historicalJob: null,
       characterID: null,
-      class1: null
+      class1: null,
+      boost: true,
+      favoritism:true
     }
   }
 }
 </script>
-<style>
-#addCard {
+<style scoped>
+.el-card{
   text-align: center;
 }
 .character_info {

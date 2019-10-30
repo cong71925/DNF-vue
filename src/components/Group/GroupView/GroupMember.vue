@@ -1,8 +1,14 @@
 <template>
   <div>
+    <characterHistoricalData
+      :dialogVisible.sync="historicalVisible"
+      :job="historicalJob"
+      :id="characterID"
+      :class_1="class1"
+    />
     <el-collapse accordion>
       <div v-for="item in memberList" :key="item.index">
-        <GroupMemberItem :memberInfo="item" />
+        <GroupMemberItem :memberInfo="item" @getHistoricalData="getHistoricalData" />
       </div>
     </el-collapse>
   </div>
@@ -10,10 +16,17 @@
 <style>
 </style>
 <script>
+import characterHistoricalData from './CharacterHistoricalData.vue'
 import GroupMemberItem from './GroupMemberItem.vue'
 export default {
-  components: { GroupMemberItem },
+  components: { characterHistoricalData, GroupMemberItem },
   methods: {
+    getHistoricalData(id, job, class1) {
+      this.characterID = id
+      this.historicalVisible = true
+      this.historicalJob = job
+      this.class1 = class1
+    },
     getMemberList() {
       this.axios({
         method: 'post',
@@ -46,7 +59,11 @@ export default {
   data() {
     this.getMemberList()
     return {
-      memberList: ''
+      memberList: '',
+      historicalVisible: false,
+      historicalJob: null,
+      characterID: null,
+      class1: null
     }
   }
 }

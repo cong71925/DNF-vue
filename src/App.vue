@@ -4,10 +4,7 @@
       <el-header>
         <navbar :key="$store.state.login" />
       </el-header>
-      <el-main
-        id="app"
-        v-loading="$store.state.loading"
-      >
+      <el-main id="app" v-loading="$store.state.loading">
         <router-view />
       </el-main>
     </el-container>
@@ -44,6 +41,14 @@ export default {
 .el-menu {
   background-color: rgba(255, 255, 255, 0);
 }
+.el-menu--popup {
+    padding: 0px 0;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.el-menu-item.is-active {
+  color: #409eff;
+}
 .el-divider__text {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 15px;
@@ -64,7 +69,11 @@ export default {
   min-width: 180px;
 }
 .el-card {
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+.el-carousel__mask {
+    background-color: rgba(255, 255, 255, 0);
+
 }
 .el-collapse {
   border-top: 1px solid #90939959;

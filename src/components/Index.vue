@@ -121,8 +121,7 @@
 <script>
 export default {
   data() {
-    return {
-      imgSrc: [
+    const imgSrc = [
         '/static/image/index/01.png',
         '/static/image/index/buffDefault.jpg',
         '/static/image/index/buffBurst.jpg',
@@ -131,6 +130,8 @@ export default {
         '/static/image/index/04.png',
         '/static/image/index/05.png'
       ]
+    return {
+      imgSrc
     }
   }
 }

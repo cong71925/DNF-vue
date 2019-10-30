@@ -4,10 +4,10 @@
       <h3>{{ memberInfo.nickname }}</h3>
       <el-badge type="info" :value="memberInfo.characterList.length" />
     </template>
-    <el-carousel :interval="4000" type="card" height="250px" v-if="memberInfo.characterList!=null">
+    <el-carousel :interval="4000" type="card" height="350px" v-if="memberInfo.characterList!=null">
       <div v-for="item in memberInfo.characterList" :key="item.index">
         <el-carousel-item>
-          <CharacterCard :characterInfo="item" />
+          <CharacterCard :characterInfo="item" @getHistoricalData="getHistoricalData" />
         </el-carousel-item>
       </div>
     </el-carousel>
@@ -19,7 +19,11 @@ import CharacterCard from './CharacterCard.vue'
 export default {
   props: ['memberInfo'],
   components: { CharacterCard },
-  methods: {},
+  methods: {
+    getHistoricalData(id, job, class1) {
+      this.$emit('getHistoricalData', id, job, class1)
+    }
+  },
   data() {
     return {}
   }

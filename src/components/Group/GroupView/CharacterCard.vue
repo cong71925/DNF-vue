@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <el-card class="box-card" shadow="hover">
     <div slot="header" class="clearfix">
       <el-image style="width: 40px; height: 40px" :src="url" :fit="'fit'"></el-image>
       <span>{{ characterInfo.character_name }}</span>
@@ -38,11 +38,23 @@
         </el-row>
       </div>
     </div>
+    <el-divider />
+    <el-button type="primary" icon="el-icon-s-marketing" @click="setHistoricalDataVisible" style="width:100%;">历史数据</el-button>
   </el-card>
 </template>
 <script>
 export default {
   props: ['characterInfo'],
+  methods: {
+    setHistoricalDataVisible() {
+      this.$emit(
+        'getHistoricalData',
+        this.characterInfo.id,
+        this.characterInfo.job,
+        this.characterInfo.class_1
+      )
+    }
+  },
   data() {
     var url =
       'static/image/face/' +

@@ -14,9 +14,9 @@
             <el-col :span="12">{{ character.job }}</el-col>
             <div v-if="character.job == '奶'">
               <el-col :span="12">常驻力智:</el-col>
-              <el-col :span="12">{{ character.buff_default }}</el-col>
+              <el-col :span="12">{{ buff_default }}</el-col>
               <el-col :span="12">常驻三攻:</el-col>
-              <el-col :span="12">{{ character.buff_atk }}</el-col>
+              <el-col :span="12">{{ buff_atk }}</el-col>
               <el-col :span="12">太阳力智:</el-col>
               <el-col :span="12">{{ character.buff_burst }}</el-col>
               <el-col :span="12">无系统奶提升率:</el-col>
@@ -32,7 +32,12 @@
             </div>
           </el-row>
           <el-divider />
-          <el-button type="primary" icon="el-icon-s-marketing" @click="setHistoricalDataVisible" style="width:100%;">历史数据</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-s-marketing"
+            @click="setHistoricalDataVisible"
+            style="width:100%;"
+          >历史数据</el-button>
         </el-collapse-item>
         <el-collapse-item title="修改信息">
           <el-form :model="form" ref="form" label-width="90px" :rules="rules">
@@ -145,25 +150,52 @@
   </el-col>
 </template>
 <script>
+import adapter from '@/adapter.js'
 import utils from '@/utils.js'
 export default {
-  props: ['job', 'class_sub', 'character'],
+  props: ['job', 'class_sub', 'character', 'boost', 'favoritism'],
   computed: {
+    buff_default() {
+      return adapter.BufferDataAdapter(
+        this.character,
+        this.character.class_1,
+        this.boost,
+        this.favoritism
+      ).buff_default
+    },
+    buff_atk(){
+      return adapter.BufferDataAdapter(
+        this.character,
+        this.character.class_1,
+        this.boost,
+        this.favoritism
+      ).buff_atk
+    },
     liftRatioDefault() {
-      var ratio = utils.GetLiftRatioDefault(
-        this.character.buff_default,
-        this.character.buff_atk,
-        this.character.buff_burst,
-        this.character.class_1
+      var buff = {}
+      buff.strInt = Number(this.character.buff_default)
+      buff.atk = Number(this.character.buff_atk)
+      buff.burst = Number(this.character.buff_burst)
+      var ratio = utils.GetLiftRatio(
+        buff,
+        this.character.class_1,
+        false,
+        this.boost,
+        this.favoritism
       )
       return ratio
     },
     liftRatioBurst() {
-      var ratio = utils.GetLiftRatioBurst(
-        this.character.buff_default,
-        this.character.buff_atk,
-        this.character.buff_burst,
-        this.character.class_1
+      var buff = {}
+      buff.strInt = Number(this.character.buff_default)
+      buff.atk = Number(this.character.buff_atk)
+      buff.burst = Number(this.character.buff_burst)
+      var ratio = utils.GetLiftRatio(
+        buff,
+        this.character.class_1,
+        true,
+        this.boost,
+        this.favoritism
       )
       return ratio
     }
@@ -179,8 +211,13 @@ export default {
         }
       })
     },
-    setHistoricalDataVisible(){
-      this.$emit('getHistoricalData',this.character.id,this.character.job,this.character.class_1)
+    setHistoricalDataVisible() {
+      this.$emit(
+        'getHistoricalData',
+        this.character.id,
+        this.character.job,
+        this.character.class_1
+      )
     },
     setModifyFalse() {
       this.modify = false

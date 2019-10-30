@@ -15,7 +15,7 @@
             ></el-cascader>
           </el-form-item>
         </el-col>
-       
+
         <el-col :xs="12" :sm="10" :md="8" :lg="6">
           <el-form-item prop="class">
             <el-cascader
@@ -29,25 +29,44 @@
         </el-col>
       </el-form-item>
       <div v-if="form.job=='奶'">
-        <el-form-item label="常驻力智" prop="buff_default">
+        <div style="color:red; font-weight:bold;">
+          <p>奶登记是buff的数值：</p>
+          <p>
+            <el-image
+              :src="imgSrc[0]"
+              :preview-src-list="imgSrc"
+              :fit="'scale-down'"
+              style="height: 160px;width: 300px"
+            ></el-image>
+            <el-image
+              :src="imgSrc[1]"
+              :preview-src-list="imgSrc"
+              :fit="'scale-down'"
+              style="height: 160px;width: 300px"
+            ></el-image>
+          </p>
+          <p>奶妈和奶萝都是登记buff的数值就行了，不需要算上唱歌和偏爱，本项目在计算提升率时会自动计算。奶爸请登记叠满二觉后的buff和太阳，有条件的可以测有魔王契约假紫光环之类的buff。奶测buff可以找朋友进修炼场或者帝国竞技场，这里不再赘述。</p>
+        </div>
+
+        <el-form-item label="常驻力智:" prop="buff_default">
           <el-input size="mini" v-model.number="form.buff_default" show-word-limit maxlength="5"></el-input>
         </el-form-item>
-        <el-form-item label="常驻三攻" prop="buff_atk">
+        <el-form-item label="常驻三攻:" prop="buff_atk">
           <el-input size="mini" v-model.number="form.buff_atk" show-word-limit maxlength="5"></el-input>
         </el-form-item>
-        <el-form-item label="太阳" prop="buff_burst">
+        <el-form-item label="太阳力智:" prop="buff_burst">
           <el-input size="mini" v-model.number="form.buff_burst" show-word-limit maxlength="5"></el-input>
         </el-form-item>
       </div>
       <div v-else>
-        <el-form-item label="15s伤害" prop="damage_15s">
+        <el-form-item label="15s绿色沙袋伤害:" prop="damage_15s">
           <el-input size="mini" v-model.number="form.damage_15s" show-word-limit maxlength="5">
-            <template slot="append">e</template>
+            <template slot="append">亿</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="20s伤害" prop="damage_20s">
+        <el-form-item label="20s绿色沙袋伤害:" prop="damage_20s">
           <el-input size="mini" v-model.number="form.damage_20s" show-word-limit maxlength="5">
-            <template slot="append">e</template>
+            <template slot="append">亿</template>
           </el-input>
         </el-form-item>
       </div>
@@ -164,7 +183,11 @@ export default {
     return {
       form,
       rules,
-      visible: this.dialogVisible
+      visible: this.dialogVisible,
+      imgSrc: [
+        '/static/image/index/buffDefault.jpg',
+        '/static/image/index/buffBurst.jpg'
+      ]
     }
   }
 }
@@ -175,5 +198,9 @@ export default {
 }
 .character_info {
   text-align: left;
+}
+.el-image {
+  text-indent: 0;
+  max-width: 90%;
 }
 </style>

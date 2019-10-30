@@ -1,15 +1,27 @@
 <template>
   <el-container>
     <el-main>
-      <el-input placeholder="请输入要查找的团队ID" v-model.number="searchInput" class="input-with-select">
-        <el-tooltip class="item" effect="dark" content="创建团队" placement="top-start" slot="prepend">
-          <el-button icon="el-icon-plus" @click="dialogVisible = true"></el-button>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="查找团队" placement="top-start" slot="append">
-          <el-button icon="el-icon-search" @click="searchVisible = true"></el-button>
-        </el-tooltip>
-      </el-input>
+      <el-button-group>
+        <el-button type="primary" icon="el-icon-plus" @click="dialogVisible = true">创建团队</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="addVisible = !addVisible">查找团队</el-button>
+      </el-button-group>
       <el-divider></el-divider>
+      <el-collapse-transition>
+        <div v-show="addVisible">
+          <el-input placeholder="请输入要查找的团队ID" v-model.number="searchInput">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="查找团队"
+              placement="top-start"
+              slot="append"
+            >
+              <el-button icon="el-icon-search" @click="searchVisible = true"></el-button>
+            </el-tooltip>
+          </el-input>
+          <el-divider></el-divider>
+        </div>
+      </el-collapse-transition>
       <el-row :gutter="20">
         <div v-for="item in group" :key="item.id">
           <groupItem :group="item" />
@@ -22,7 +34,7 @@
         @update="getGroup"
       />
     </el-main>
-    <el-footer height="30px" >
+    <el-footer height="30px">
       <el-pagination
         layout="prev, pager, next"
         :total="nums"
@@ -82,7 +94,8 @@ export default {
       page: 1,
       nums: 0,
       group,
-      searchInput: ''
+      searchInput: '',
+      addVisible: false
     }
   }
 }

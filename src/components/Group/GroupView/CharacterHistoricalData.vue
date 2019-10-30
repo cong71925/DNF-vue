@@ -22,41 +22,6 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-divider />
-    <div v-if="show">
-      <el-table v-if="job === '奶'" :data="historicalInfo" style="width: 100%">
-        <el-table-column prop="create_time" label="时间"></el-table-column>
-        <el-table-column prop="buff_default" label="常驻力智"></el-table-column>
-        <el-table-column prop="buff_atk" label="常驻三攻"></el-table-column>
-        <el-table-column prop="buff_burst" label="太阳力智"></el-table-column>
-        <el-table-column prop="ratio" label="有系统奶提升率"></el-table-column>
-        <el-table-column label="操作" width="130px">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="danger"
-              @click="removeHistoricalInfo(scope.row.id)"
-              icon="el-icon-close"
-            >删除记录</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-table v-else :data="historicalInfo" style="width: 100%">
-        <el-table-column prop="create_time" label="时间"></el-table-column>
-        <el-table-column prop="damage_15s" label="15s"></el-table-column>
-        <el-table-column prop="damage_20s" label="20s"></el-table-column>
-        <el-table-column label="操作" width="130px">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="danger"
-              @click="removeHistoricalInfo(scope.row.id)"
-              icon="el-icon-close"
-            >删除记录</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
   </el-dialog>
 </template>
 <script>
@@ -229,52 +194,6 @@ export default {
           })
           .label('damage')
       }
-    },
-    removeHistoricalInfo(id) {
-      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          this.axios({
-            method: 'post',
-            data: {
-              action: 'removeCharacterHistoricalInfo',
-              data: {
-                user_id: this.$store.state.user_id,
-                user_token: this.$store.state.user_token,
-                historicalID: id
-              }
-            }
-          })
-            .then(response => {
-              if (response.data.state === 'success') {
-                this.$message({
-                  type: 'success',
-                  showClose: true,
-                  message: '删除成功!'
-                })
-                this.getdata()
-              } else {
-                this.$message({
-                  type: 'error',
-                  showClose: true,
-                  message: '删除失败!'
-                })
-              }
-            })
-            .catch(response => {
-              console.log(response.data)
-            })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            showClose: true,
-            message: '已取消删除'
-          })
-        })
     }
   },
   data() {
