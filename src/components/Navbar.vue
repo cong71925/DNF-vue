@@ -41,6 +41,19 @@
           <i class="el-icon-c-scale-to-original"></i>
         </el-tooltip>
       </el-menu-item>
+      <el-menu-item index="/log">
+        <div class="hidden-xs-only">
+          <i class="el-icon-document"></i>更新日志
+        </div>
+        <el-tooltip
+          class="item hidden-sm-and-up"
+          effect="dark"
+          content="更新日志"
+          placement="bottom-start"
+        >
+          <i class="el-icon-document"></i>
+        </el-tooltip>
+      </el-menu-item>
 
       <el-submenu index id="user" v-if="$store.state.isLogin">
         <template slot="title">

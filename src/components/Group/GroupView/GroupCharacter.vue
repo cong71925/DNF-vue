@@ -68,7 +68,7 @@
           <el-table-column prop="nickname" label="所属成员" sortable></el-table-column>
           <el-table-column prop="buff_default" label="常驻力智" sortable></el-table-column>
           <el-table-column prop="buff_atk" label="常驻三攻" sortable></el-table-column>
-          <el-table-column prop="buff_burst" label="爆发力智" sortable></el-table-column>
+          <el-table-column prop="buff_burst" label="太阳力智" sortable></el-table-column>
           <el-table-column prop="LiftRatioDefault" label="无系统奶提升率" sortable></el-table-column>
           <el-table-column prop="LiftRatioBurst" label="有系统奶提升率" sortable></el-table-column>
         </el-table>

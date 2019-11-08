@@ -6,10 +6,10 @@
       <div>
         <p>
           本项目主要面向于小团体，可以更方便地查看和管理每个群员的打团角色信息（方便群内打碟）。
-          对于常年打野玩家而言，本项目也可以帮你管理角色的各种数据，例如C的打桩伤害，奶的buff数据，提升率等。
-          但是应该是对进团没有任何帮助的（毕竟你不可能背着绿纱袋打团）。
+          本项目可以登记角色，记录角色每次修改的数据，将其历史数据以图表显示。
+          对于奶系角色，还可以计算唱歌和偏爱后的buff数值和对C提升率。
+          在团队内还能查看并排序团员的各项数据，以及伤害和buff的历史数据
         </p>
-        <p>以后可能大概或许会加新功能（咕咕咕）。</p>
       </div>
       <el-divider content-position="left">安全声明</el-divider>
       <div>
@@ -76,7 +76,7 @@
             style="height: 160px;width: 300px"
           ></el-image>
         </p>
-        <p>奶妈和奶萝都是登记buff的数值就行了，不需要算上唱歌和偏爱，本项目在计算提升率时会自动计算。</p>
+        <p>奶妈和奶萝都是登记buff的数值就行了，不需要算上唱歌和偏爱，本项目会自动计算唱歌和偏爱后的数值和对C提升率。</p>
         <p>奶爸请登记叠满二觉后的buff和太阳，有条件的可以测有魔王契约假紫光环之类的buff。</p>
         <p>奶测buff可以找朋友进修炼场或者帝国竞技场，这里不再赘述。</p>
       </div>
@@ -86,12 +86,6 @@
           为便于计算，计算提升率的模板C为3000力智，2400三攻，系统奶为8000力智，该模板C偏弱的原因是为了方便奶之间的横向比较。
           因此计算出来的提升率仅有参考意义。
         </p>
-        <p>奶妈在提升率会计算常驻buff的圣歌30%加成。</p>
-        <p>
-          奶萝的提升率会计算常驻buff的死命召唤25%和偏爱的一半加成（即7.5%加成），由于奶萝的偏爱问题，
-          倘若计算提升率时仅计算单C的偏爱的话会偏高，不利于奶之间的横向比较，因此仅计算7.5%的偏爱加成。
-        </p>
-        <p>奶爸无唱歌，因而无加成。</p>
       </div>
       <el-divider content-position="left">补充</el-divider>
       <div>
@@ -122,14 +116,14 @@
 export default {
   data() {
     const imgSrc = [
-        '/static/image/index/01.png',
-        '/static/image/index/buffDefault.jpg',
-        '/static/image/index/buffBurst.jpg',
-        '/static/image/index/02.png',
-        '/static/image/index/03.png',
-        '/static/image/index/04.png',
-        '/static/image/index/05.png'
-      ]
+      '/static/image/index/01.png',
+      '/static/image/index/buffDefault.jpg',
+      '/static/image/index/buffBurst.jpg',
+      '/static/image/index/02.png',
+      '/static/image/index/03.png',
+      '/static/image/index/04.png',
+      '/static/image/index/05.png'
+    ]
     return {
       imgSrc
     }

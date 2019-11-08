@@ -14,7 +14,7 @@
         :class_1="class1"
         @update="getCharacter"
       />
-      <el-row :gutter="20">
+      <el-row :gutter="10">
         <el-col :xs="8" :sm="6" :md="4" :lg="3">
           <el-button
             type="primary"

@@ -14,6 +14,7 @@ import GroupSetting from '@/components/Group/GroupView/GroupSetting.vue'
 import GroupInfo from '@/components/Group/GroupView/GroupInfo.vue'
 import GroupMember from '@/components/Group/GroupView/GroupMember.vue'
 import GroupCharacter from '@/components/Group/GroupView/GroupCharacter.vue'
+import Log from '@/components/Log.vue'
 
 Vue.use(Router)
 const router = new Router({
@@ -33,6 +34,11 @@ const router = new Router({
       path: '/register',
       name: 'Register',
       component: Register
+    },
+    {
+      path: '/log',
+      name: 'Log',
+      component: Log
     },
     {
       path: '/account',
